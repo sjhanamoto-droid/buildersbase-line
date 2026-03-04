@@ -491,89 +491,10 @@
     font-weight: 500;
   }
 
-  /* === Member Cards === */
-  .member-card {
-    position: relative;
-    background: var(--surface);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    margin-bottom: 10px;
-    border: 1px solid var(--border-light);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
-    animation: cardReveal 0.45s ease-out backwards;
-    overflow: hidden;
-  }
-
-  .member-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: var(--amber);
-    border-radius: 0 3px 3px 0;
-    opacity: 0;
-    transform: scaleY(0);
-    transition: all 0.3s ease;
-  }
-
-  .member-card:hover {
-    border-color: var(--border);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-  }
-
-  .member-card:hover::before {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-
+  /* === Card Shared === */
   @keyframes cardReveal {
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 14px;
-  }
-
-  .avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 800;
-    color: white;
-    flex-shrink: 0;
-    letter-spacing: -0.02em;
-    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);
-  }
-
-  .card-info { flex: 1; min-width: 0; }
-
-  .card-company {
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .card-name {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 400;
-    margin-top: 1px;
   }
 
   .card-tags {
@@ -637,6 +558,162 @@
   }
 
   .btn-contact:active { transform: scale(0.97); }
+
+  /* === Photo Card (メンバー会員) === */
+  .photo-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    animation: cardReveal 0.45s ease-out backwards;
+  }
+
+  .photo-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .photo-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--border-light);
+  }
+
+  .photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .photo-card:hover .photo-wrap img {
+    transform: scale(1.03);
+  }
+
+  .photo-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 12px 14px;
+  }
+
+  .photo-badge {
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 9px;
+    font-weight: 700;
+    background: rgba(0,0,0,0.45);
+    color: white;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.15);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .photo-body {
+    padding: 16px 18px 18px;
+  }
+
+  .photo-company-body {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .photo-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* === Small Card (協力会員) === */
+  .member-card {
+    position: relative;
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    animation: cardReveal 0.45s ease-out backwards;
+    overflow: hidden;
+  }
+
+  .member-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--amber);
+    border-radius: 0 3px 3px 0;
+    opacity: 0;
+    transform: scaleY(0);
+    transition: all 0.3s ease;
+  }
+
+  .member-card:hover {
+    border-color: var(--border);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  .member-card:hover::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);
+  }
+
+  .card-info { flex: 1; min-width: 0; }
+
+  .card-company {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card-name {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 1px;
+  }
 
   /* === Empty State === */
   .empty-state {
@@ -868,31 +945,38 @@
 
 <script>
 // === Data ===
+const IMG = 'https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/';
 const MEMBERS = [
-  { company: 'novus', name: '松本 雄一', tags: ['施工管理'] },
-  { company: '株式会社鈴洋', name: '齊藤 真由美', tags: ['水道設備工事'] },
-  { company: '小松空調', name: '小松 涼星', tags: ['空調設備', 'エアコン設置'] },
-  { company: '株式会社ピジョン', name: '矢作 政人', tags: ['床/フローリング', '木工事全般'] },
-  { company: '株式会社門大', name: '澤田 大地', tags: ['内装工事仕上業', '軽量ボード', '床/フローリング', '荷揚げ'] },
-  { company: 'R.Planning', name: '金井 梨香', tags: ['図面作成', '設計'] },
-  { company: '株式会社三信', name: '佐藤 文章', tags: ['解体', '産業廃棄物処理業'] },
-  { company: '株式会社オフオン', name: '田中 克幸', tags: ['空調設備', '通信設備工事', '電気設備工事'] },
-  { company: 'DOES', name: '年岡 大吾', tags: ['塗装'] },
-  { company: '株式会社スマイル設備', name: '今野 良也', tags: ['リフォーム'] },
-  { company: '株式会社クラファイド', name: '武藤 祐輔', tags: ['軽天', '内装仕上'] },
-  { company: '株式会社シンカワ', name: '近藤 信也', tags: ['総合建築'] },
-  { company: '株式会社ci-m.', name: '小松 毅', tags: ['防水', '塗装'] },
-  { company: '株式会社MAHALO', name: '佐々木 晴一', tags: ['リフォーム'] },
-  { company: 'U.N.E', name: '宇根 司', tags: ['家具製作'] },
-  { company: '株式会社リプラス', name: '直井 啓太郎', tags: ['リフォーム'] },
-  { company: '株式会社Uスタイル', name: '牛尾 信樹', tags: ['防水', 'リフォーム'] },
-  { company: 'architect studio M', name: '藤原 盛幸', tags: ['設計'] },
-  { company: '株式会社ディオ', name: '三浦 洋介', tags: ['リフォーム', '施工管理'] },
-  { company: '株式会社DA-1', name: '松田 大地', tags: ['リフォーム'] },
-  { company: 'KUD', name: '國府田 拓郎', tags: ['リフォーム', '内装'] },
-  { company: '株式会社NBS', name: '長沼 和人', tags: ['リフォーム', '設備配管工事'] },
-  { company: '株式会社たつとら', name: '越野 潤一', tags: ['内装'] },
-  { company: '株式会社高清', name: '高橋 賢一', tags: ['リフォーム', '防水', '外壁改修'] }
+  // === メンバー会員 (type: 'member') ===
+  { company: 'novus', name: '松本 雄一', tags: ['施工管理'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_0f0454e5-8125-483f-9a85-ff483cb97f01.webp' },
+  { company: '株式会社鈴洋', name: '齊藤 真由美', tags: ['水道設備工事'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_be7cca8d-4b24-4927-86d4-072b72cc811e.webp' },
+  { company: '小松空調', name: '小松 涼星', tags: ['空調設備', 'エアコン設置'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_8f6977b3-9b9b-4291-9fd6-64e651bfd207.webp' },
+  { company: '株式会社ピジョン', name: '矢作 政人', tags: ['床/フローリング', '木工事全般'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_7a2f5de4-fa79-43b3-a66b-4901a0aadc5f.webp' },
+  { company: '株式会社門大', name: '澤田 大地', tags: ['内装工事仕上業', '軽量ボード', '床/フローリング', '荷揚げ'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_1fab8438-97e1-4c81-8160-bb4931173085.webp' },
+  { company: 'R.Planning', name: '金井 梨香', tags: ['図面作成', '設計'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_7e1081cc-52e8-40af-93bd-cf7b158aa24d.webp' },
+  { company: '株式会社三信', name: '佐藤 文章', tags: ['解体', '産業廃棄物処理業'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_91e95106-32a8-4bc2-9d54-013590abaac4.webp' },
+  { company: '株式会社オフオン', name: '田中 克幸', tags: ['空調設備', '通信設備工事', '電気設備工事'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_da8d3e45-d1fe-4e94-880a-9857a7fd6b31.webp' },
+  { company: 'DOES', name: '年岡 大吾', tags: ['塗装'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_856447bb-1f46-4024-a7b3-e305bc3bf66d.webp' },
+  { company: '株式会社スマイル設備', name: '今野 良也', tags: ['リフォーム'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_f7baeb9b-4789-4abf-9e33-1964cfc2bb27.webp' },
+  { company: '株式会社クラファイド', name: '武藤 祐輔', tags: ['軽天', '内装仕上'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_71f2bec6-892a-4813-85d5-63bd85f5934b.webp' },
+  { company: '株式会社シンカワ', name: '近藤 信也', tags: ['総合建築'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_8e5581c6-7891-4fb5-9541-b25ece264a68.webp' },
+  { company: '株式会社ci-m.', name: '小松 毅', tags: ['防水', '塗装'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_fcbda410-9d1d-483d-8c6f-76e8095fee37.webp' },
+  { company: '株式会社MAHALO', name: '佐々木 晴一', tags: ['リフォーム'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_9f55b1b5-238b-4862-b367-08d3f1eb8b94.webp' },
+  { company: 'U.N.E', name: '宇根 司', tags: ['家具製作'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_4cea63f2-b89f-4d60-aaba-53b5da0e6da1.webp' },
+  { company: '株式会社リプラス', name: '直井 啓太郎', tags: ['リフォーム'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_b783482c-a81c-4200-ac69-bde81593d0a1.webp' },
+  { company: '株式会社Uスタイル', name: '牛尾 信樹', tags: ['防水', 'リフォーム'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_aa39a421-0203-4cee-b903-6d97656b058d.webp' },
+  { company: 'architect studio M', name: '藤原 盛幸', tags: ['設計'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_f3735767-b55e-482d-967a-c77a79a3499a.webp' },
+  { company: '株式会社ディオ', name: '三浦 洋介', tags: ['リフォーム', '施工管理'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_88dd0d8c-0937-47eb-b7f6-cd0d87f3b6ae.webp' },
+  { company: '株式会社DA-1', name: '松田 大地', tags: ['リフォーム'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_795782a2-2b7b-487f-90e1-7675092e43b2.webp' },
+  { company: 'KUD', name: '國府田 拓郎', tags: ['リフォーム', '内装'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_dd2979dd-2228-43e5-883a-a99038ae2f6c.webp' },
+  { company: '株式会社NBS', name: '長沼 和人', tags: ['リフォーム', '設備配管工事'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_973cb285-b611-45ca-a9cf-abf4d475423f.webp' },
+  { company: '株式会社たつとら', name: '越野 潤一', tags: ['内装'], type: 'member', img: IMG+'s-350x299_webp_b511d196-87d3-4374-9faf-22183b87faeb.jpg' },
+  { company: '株式会社高清', name: '高橋 賢一', tags: ['リフォーム', '防水', '外壁改修'], type: 'member', img: IMG+'s-438x292_webp_7edd9c4c-aded-4db6-9fd5-60fe04bc73dd.jpg' },
+  { company: '株式会社ＡＲＭＹ\'Ｓ', name: '遠峰 圭佑', tags: [], type: 'member', img: IMG+'s-1200x630_v-fms_webp_7bf01fb2-8a01-4370-b765-d8224bda91ee.webp' },
+  { company: 'SJDESIGN', name: '花本 昌樹', tags: ['写真撮影'], type: 'member', img: IMG+'s-1200x630_v-fms_webp_f48eb381-dc42-4f7e-b92e-d43793e58911.webp' },
+  { company: '株式会社グラティ', name: '外 大樹', tags: [], type: 'member', img: IMG+'s-1200x630_v-fms_webp_e4147435-0fc0-4c25-86bb-43a72402026e.webp' },
+  { company: '株式会社リスタクト', name: '上田平', tags: [], type: 'member', img: IMG+'s-1200x630_v-fms_webp_e4147435-0fc0-4c25-86bb-43a72402026e.webp' },
+  { company: '株式会社ワークス', name: '金川 義隆', tags: [], type: 'member', img: IMG+'s-1200x630_v-fms_webp_e4147435-0fc0-4c25-86bb-43a72402026e.webp' }
 ];
 
 // === Categories ===
@@ -925,7 +1009,7 @@ const CATEGORIES = [
   {
     id: 'other', label: 'その他',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
-    trades: ['解体', '荷揚げ', '産業廃棄物処理業', '木工事全般']
+    trades: ['解体', '荷揚げ', '産業廃棄物処理業', '木工事全般', '写真撮影']
   }
 ];
 
@@ -994,13 +1078,47 @@ function renderSubtrades() {
   section.classList.add('open');
 }
 
+// === Action Buttons HTML ===
+const ACTIONS_HTML = `
+  <div class="card-actions">
+    <a href="https://builders-base.com/member" class="btn-detail" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      詳細
+    </a>
+    <a href="tel:03-6384-7984" class="btn-contact">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      お問い合わせ
+    </a>
+  </div>`;
+
 // === Render Card ===
 function renderCard(m, index) {
-  const color = getAvatarColor(m.company);
-  const initial = getInitial(m.company);
   const tags = m.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
   const delay = Math.min(index * 0.04, 0.6);
 
+  // メンバー会員: Photo Card
+  if (m.type === 'member' && m.img) {
+    return `
+      <div class="photo-card" style="animation-delay:${delay}s">
+        <div class="photo-wrap">
+          <img src="${m.img}" alt="${m.company}" loading="lazy">
+          <div class="photo-overlay">
+            <span class="photo-badge">MEMBER</span>
+          </div>
+        </div>
+        <div class="photo-body">
+          <div class="photo-company-body">${m.company}</div>
+          <div class="photo-name">${m.name}</div>
+          ${tags ? `<div class="card-tags">${tags}</div>` : '<div style="margin-bottom:16px"></div>'}
+          ${ACTIONS_HTML}
+        </div>
+      </div>
+    `;
+  }
+
+  // 協力会員: Small Card
+  const color = getAvatarColor(m.company);
+  const initial = getInitial(m.company);
   return `
     <div class="member-card" style="animation-delay:${delay}s">
       <div class="card-top">
@@ -1010,17 +1128,8 @@ function renderCard(m, index) {
           <div class="card-name">${m.name}</div>
         </div>
       </div>
-      <div class="card-tags">${tags}</div>
-      <div class="card-actions">
-        <a href="https://builders-base.com/member" class="btn-detail" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          詳細
-        </a>
-        <a href="tel:03-6384-7984" class="btn-contact">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          お問い合わせ
-        </a>
-      </div>
+      ${tags ? `<div class="card-tags">${tags}</div>` : '<div style="margin-bottom:16px"></div>'}
+      ${ACTIONS_HTML}
     </div>
   `;
 }
