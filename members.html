@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メンバー一覧 | Builders Base</title>
+<style>
+  :root {
+    --black: #1a1a1a;
+    --orange: #e8960c;
+    --orange-light: #f5a623;
+    --orange-bg: #fff8ee;
+    --gray: #6b7280;
+    --gray-light: #f3f4f6;
+    --gray-border: #e5e7eb;
+    --white: #ffffff;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+    background: var(--gray-light);
+    color: var(--black);
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .header {
+    background: var(--black);
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .header svg { height: 32px; width: auto; }
+
+  .header h1 {
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .container {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 16px 16px 40px;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #f7a030 0%, #e8960c 100%);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    text-align: center;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .hero h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .hero p {
+    font-size: 13px;
+    opacity: 0.9;
+  }
+
+  /* Search */
+  .search-box {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    border: 2px solid var(--gray-border);
+    border-radius: var(--radius);
+    font-size: 15px;
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-box input:focus {
+    border-color: var(--orange);
+  }
+
+  .search-box svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--gray);
+  }
+
+  /* Filter */
+  .filter-section {
+    margin-bottom: 20px;
+  }
+
+  .filter-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-label button {
+    font-size: 12px;
+    color: var(--orange);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-tag {
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1.5px solid var(--gray-border);
+    background: var(--white);
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-tag:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  .filter-tag.active {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+  }
+
+  /* Results count */
+  .results-count {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  .results-count strong {
+    color: var(--orange);
+    font-size: 18px;
+  }
+
+  /* Member card */
+  .member-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid var(--gray-border);
+    transition: all 0.2s;
+  }
+
+  .member-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(232, 150, 12, 0.1);
+  }
+
+  .member-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .member-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f7a030 0%, #e8960c 100%);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .member-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .member-company {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .member-name {
+    font-size: 13px;
+    color: var(--gray);
+  }
+
+  .member-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .member-tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--orange-bg);
+    color: var(--orange);
+    white-space: nowrap;
+  }
+
+  .member-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .member-actions a {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .member-actions svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .btn-contact {
+    background: var(--orange);
+    color: var(--white);
+  }
+
+  .btn-contact:hover {
+    background: var(--orange-light);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(232, 150, 12, 0.3);
+  }
+
+  .btn-detail {
+    background: var(--gray-light);
+    color: var(--black);
+    border: 1px solid var(--gray-border);
+  }
+
+  .btn-detail:hover {
+    background: var(--gray-border);
+  }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--gray);
+  }
+
+  .no-results svg {
+    width: 48px;
+    height: 48px;
+    color: var(--gray-border);
+    margin-bottom: 12px;
+  }
+
+  .no-results p {
+    font-size: 14px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  .footer a {
+    color: var(--orange);
+    text-decoration: none;
+  }
+
+  /* Scroll to top */
+  .scroll-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+    z-index: 100;
+  }
+
+  .scroll-top.show { display: flex; }
+  .scroll-top:hover { transform: translateY(-2px); }
+  .scroll-top svg { width: 20px; height: 20px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <svg viewBox="0 0 133 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M23.2948 8.14661H15.2412C14.3175 8.14661 13.8557 8.37529 13.8557 8.83265V62H4.76289C2.8 62 1.50103 61.7142 0.865979 61.1425C0.288659 60.5136 0 59.2273 0 57.2835V4.88797C0 2.88705 0.288659 1.57216 0.865979 0.943296C1.50103 0.314432 2.8 0 4.76289 0H23.2948V8.14661ZM28.1443 35.0733H36.3711C38.7381 35.0733 40.268 35.6164 40.9608 36.7026C41.6536 37.7317 42 39.3896 42 41.6764V54.3679C42 58.1411 40.9897 60.4564 38.9691 61.314C37.9876 61.7713 36.7464 62 35.2454 62H17.3196V53.9391H24.5938C26.9608 53.9391 28.1443 53.1102 28.1443 51.4523V35.0733ZM27.0186 0H35.2454C37.5546 0 39.0268 0.514524 39.6619 1.54357C40.3546 2.57262 40.701 4.25911 40.701 6.60305V23.0678C40.701 26.3836 40.0948 28.7847 38.8825 30.2711C37.7278 31.7575 35.2742 32.5007 31.5216 32.5007H17.3196V24.3541H23.7278C25.1711 24.3541 26.066 24.0111 26.4124 23.325C26.8165 22.639 27.0186 21.5814 27.0186 20.1521V0Z" fill="white"/>
+    <path d="M56.736 21.656H61.156V36.476H57.022V34.474H56.97C56.112 36.008 54.578 36.736 52.706 36.736C50.054 36.736 48 35.15 48 31.692V21.656H52.42V30.756C52.42 32.758 53.044 33.46 54.474 33.46C55.748 33.46 56.736 32.68 56.736 30.756V21.656Z" fill="white"/>
+    <path d="M66.5114 15C67.9154 15 69.0854 15.884 69.0854 17.496C69.0854 19.082 67.9154 20.07 66.5114 20.07C65.1074 20.07 64.0154 19.16 64.0154 17.496C64.0154 15.884 65.1074 15 66.5114 15ZM68.7214 21.656V36.476H64.3014V21.656H68.7214Z" fill="white"/>
+    <path d="M76.2872 15.676V32.394C76.2872 33.2 76.5472 33.616 77.3272 33.616C77.4312 33.616 77.6132 33.616 77.7692 33.564V36.476C77.2752 36.632 76.4952 36.736 75.7932 36.736C73.5572 36.736 71.8672 35.93 71.8672 33.122V15.676H76.2872Z" fill="white"/>
+    <path d="M88.198 15.676H92.618V36.476H88.328V36.32C88.328 35.852 88.354 35.462 88.458 34.864H88.354C87.418 36.06 86.118 36.736 84.532 36.736C80.658 36.736 78.552 34.006 78.552 29.014C78.552 24.568 81.152 21.396 84.792 21.396C86.326 21.396 87.522 21.968 88.406 23.06H88.484C88.25 21.994 88.198 21.24 88.198 19.03V15.676ZM85.832 33.512C87.47 33.512 88.406 31.874 88.406 28.988C88.406 25.998 87.522 24.568 85.702 24.568C84.064 24.568 83.05 26.258 83.05 29.014C83.05 31.848 84.09 33.512 85.832 33.512Z" fill="white"/>
+    <path d="M108.214 28.104V30.366H99.4264C99.6864 32.836 100.674 33.746 102 33.746C102.988 33.746 103.638 33.07 103.95 31.822L107.824 32.992C106.576 35.982 104.47 36.736 101.948 36.736C97.4764 36.736 94.9544 34.084 94.9544 29.3C94.9544 23.996 97.7884 21.396 101.584 21.396C106.316 21.396 108.214 24.412 108.214 28.104ZM99.4524 27.402H104.106C104.08 25.374 103.092 24.36 101.818 24.36C100.726 24.36 99.7384 25.036 99.4524 27.402Z" fill="white"/>
+    <path d="M114.151 25.556H114.281C114.697 22.748 115.997 21.318 118.076 21.318C118.467 21.318 118.935 21.344 119.325 21.422V25.114C118.935 25.036 118.467 25.01 118.076 25.01C116.152 25.01 115.008 25.504 115.008 28.468V36.476H110.562V21.656H114.151V25.556Z" fill="white"/>
+    <path d="M119.733 32.758L123.399 31.406C124.231 33.174 125.271 33.928 126.493 33.928C127.507 33.928 128.027 33.434 128.027 32.758C128.027 31.666 126.935 31.25 124.335 30.444C121.631 29.612 120.383 28.468 120.383 26.154C120.383 23.294 122.619 21.344 126.103 21.344C129.197 21.344 131.329 22.722 131.979 25.244L128.417 26.336C128.053 24.932 127.091 24.126 125.921 24.126C125.011 24.126 124.517 24.568 124.517 25.348C124.517 26.128 125.115 26.57 126.883 27.064C130.367 28.026 132.161 29.222 132.161 31.952C132.161 34.942 129.821 36.788 126.025 36.788C123.061 36.788 120.799 35.566 119.733 32.758Z" fill="white"/>
+    <path d="M106.649 52.904V55.166H97.8605C98.1205 57.636 99.1085 58.546 100.435 58.546C101.423 58.546 102.073 57.87 102.385 56.622L106.259 57.792C105.011 60.782 102.905 61.536 100.383 61.536C95.9105 61.536 93.3885 58.884 93.3885 54.1C93.3885 48.796 96.2225 46.196 100.019 46.196C104.751 46.196 106.649 49.212 106.649 52.904ZM97.8865 52.202H102.541C102.515 50.174 101.527 49.16 100.253 49.16C99.1605 49.16 98.1725 49.836 97.8865 52.202Z" fill="white"/>
+    <path d="M79.5222 57.558L83.1882 56.206C84.0202 57.974 85.0602 58.728 86.2822 58.728C87.2962 58.728 87.8162 58.234 87.8162 57.558C87.8162 56.466 86.7242 56.05 84.1242 55.244C81.4202 54.412 80.1722 53.268 80.1722 50.954C80.1722 48.094 82.4082 46.144 85.8922 46.144C88.9862 46.144 91.1182 47.522 91.7682 50.044L88.2062 51.136C87.8422 49.732 86.8802 48.926 85.7102 48.926C84.8002 48.926 84.3062 49.368 84.3062 50.148C84.3062 50.928 84.9042 51.37 86.6722 51.864C90.1562 52.826 91.9502 54.022 91.9502 56.752C91.9502 59.742 89.6102 61.588 85.8142 61.588C82.8502 61.588 80.5882 60.366 79.5222 57.558Z" fill="white"/>
+    <path d="M77.2413 51.5V56.388C77.2413 57.324 77.5793 57.766 78.2553 57.766C78.4893 57.766 78.5673 57.766 78.6193 57.74V60.86C77.7873 61.172 77.1373 61.276 76.2533 61.276C74.5633 61.276 73.7833 60.704 73.4193 59.586C72.5353 60.912 71.1573 61.536 69.2593 61.536C66.1913 61.536 64.3193 59.898 64.3193 57.116C64.3193 54.048 66.7893 52.41 70.7153 52.41C71.2873 52.41 72.0673 52.462 72.7953 52.592V51.708C72.7953 49.914 72.1193 49.082 70.9233 49.082C69.7013 49.082 69.0253 49.836 68.7393 51.5L64.9693 50.798C65.6973 47.808 67.9073 46.196 71.2353 46.196C74.9533 46.196 77.2413 48.146 77.2413 51.5ZM70.5333 58.546C72.0413 58.546 72.7953 57.61 72.7953 55.452C72.3013 55.322 71.5993 55.244 70.9493 55.244C69.5973 55.244 68.7393 55.894 68.7393 57.012C68.7393 57.896 69.4153 58.546 70.5333 58.546Z" fill="white"/>
+    <path d="M52.34 48.692H52.418C53.328 47.106 54.784 46.196 56.656 46.196C60.53 46.196 62.636 48.926 62.636 53.918C62.636 58.364 60.036 61.536 56.396 61.536C54.602 61.536 53.25 60.756 52.392 59.3L52.34 59.326C52.6 59.872 52.73 60.184 52.73 61.146V61.276H48.44V40.476H52.86V45.416C52.86 46.716 52.652 47.938 52.34 48.692ZM55.486 58.364C57.046 58.364 58.138 56.804 58.138 53.918C58.138 51.006 57.046 49.42 55.356 49.42C53.744 49.42 52.782 51.006 52.782 53.944C52.782 56.908 53.64 58.364 55.486 58.364Z" fill="white"/>
+  </svg>
+  <h1>メンバー一覧</h1>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <h2>職人を探す</h2>
+    <p>仕事を依頼したい職種から<br>プロの職人・会社を検索できます</p>
+  </div>
+
+  <!-- Search -->
+  <div class="search-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="会社名・名前・職種で検索">
+  </div>
+
+  <!-- Filter tags -->
+  <div class="filter-section">
+    <div class="filter-label">
+      <span>職種で絞り込み</span>
+      <button id="clearFilter" style="display:none">すべて表示</button>
+    </div>
+    <div class="filter-tags" id="filterTags"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-count" id="resultsCount"></div>
+
+  <!-- Member list -->
+  <div id="memberList"></div>
+
+  <!-- No results -->
+  <div class="no-results" id="noResults" style="display:none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6"/></svg>
+    <p>該当するメンバーが見つかりません<br>条件を変更してお試しください</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Builders Base【ビルダーズベース】</p>
+  <p>Tel: <a href="tel:03-6384-7984">03-6384-7984</a></p>
+  <p>Mail: <a href="mailto:info@diokk.co.jp">info@diokk.co.jp</a></p>
+</div>
+
+<button class="scroll-top" id="scrollTop">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script>
+  // === Member Data ===
+  const MEMBERS = [
+    { company: 'novus', name: '松本 雄一', tags: ['施工管理'] },
+    { company: '株式会社鈴洋', name: '齊藤 真由美', tags: ['水道設備工事'] },
+    { company: '小松空調', name: '小松 涼星', tags: ['空調設備', 'エアコン設置'] },
+    { company: '株式会社ピジョン', name: '矢作 政人', tags: ['床/フローリング', '木工事全般'] },
+    { company: '株式会社門大', name: '澤田 大地', tags: ['内装工事仕上業', '軽量ボード', '床/フローリング', '荷揚げ'] },
+    { company: 'R.Planning', name: '金井 梨香', tags: ['図面作成', '設計'] },
+    { company: '株式会社三信', name: '佐藤 文章', tags: ['解体', '産業廃棄物処理業'] },
+    { company: '株式会社オフオン', name: '田中 克幸', tags: ['空調設備', '通信設備工事', '電気設備工事'] },
+    { company: 'DOES', name: '年岡 大吾', tags: ['塗装'] },
+    { company: '株式会社スマイル設備', name: '今野 良也', tags: ['リフォーム'] },
+    { company: '株式会社クラファイド', name: '武藤 祐輔', tags: ['軽天', '内装仕上'] },
+    { company: '株式会社シンカワ', name: '近藤 信也', tags: ['総合建築'] },
+    { company: '株式会社ci-m.', name: '小松 毅', tags: ['防水', '塗装'] },
+    { company: '株式会社MAHALO', name: '佐々木 晴一', tags: ['リフォーム'] },
+    { company: 'U.N.E', name: '宇根 司', tags: ['家具製作'] },
+    { company: '株式会社リプラス', name: '直井 啓太郎', tags: ['リフォーム'] },
+    { company: '株式会社Uスタイル', name: '牛尾 信樹', tags: ['防水', 'リフォーム'] },
+    { company: 'architect studio M', name: '藤原 盛幸', tags: ['設計'] },
+    { company: '株式会社ディオ', name: '三浦 洋介', tags: ['リフォーム', '施工管理'] },
+    { company: '株式会社DA-1', name: '松田 大地', tags: ['リフォーム'] },
+    { company: 'KUD', name: '國府田 拓郎', tags: ['リフォーム', '内装'] },
+    { company: '株式会社NBS', name: '長沼 和人', tags: ['リフォーム', '設備配管工事'] },
+    { company: '株式会社たつとら', name: '越野 潤一', tags: ['内装'] },
+    { company: '株式会社高清', name: '高橋 賢一', tags: ['リフォーム', '防水', '外壁改修'] }
+  ];
+
+  // Build unique tags
+  const allTags = [...new Set(MEMBERS.flatMap(m => m.tags))].sort();
+
+  let activeTag = null;
+  let searchQuery = '';
+
+  // Render filter tags
+  function renderFilterTags() {
+    const container = document.getElementById('filterTags');
+    container.innerHTML = allTags.map(tag =>
+      `<button class="filter-tag${activeTag === tag ? ' active' : ''}" data-tag="${tag}">${tag}</button>`
+    ).join('');
+  }
+
+  // Get initials
+  function getInitial(name) {
+    return name.charAt(0);
+  }
+
+  // Render member card
+  function renderCard(m) {
+    const initial = getInitial(m.company);
+    const tagsHtml = m.tags.map(t => `<span class="member-tag">${t}</span>`).join('');
+    return `
+      <div class="member-card" data-tags="${m.tags.join(',')}" data-company="${m.company}" data-name="${m.name}">
+        <div class="member-top">
+          <div class="member-avatar">${initial}</div>
+          <div class="member-info">
+            <div class="member-company">${m.company}</div>
+            <div class="member-name">${m.name}</div>
+          </div>
+        </div>
+        <div class="member-tags">${tagsHtml}</div>
+        <div class="member-actions">
+          <a href="https://builders-base.com/member" class="btn-detail" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            詳細
+          </a>
+          <a href="tel:03-6384-7984" class="btn-contact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            お問い合わせ
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  // Filter & render
+  function filterAndRender() {
+    let filtered = MEMBERS;
+
+    if (activeTag) {
+      filtered = filtered.filter(m => m.tags.includes(activeTag));
+    }
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(m =>
+        m.company.toLowerCase().includes(q) ||
+        m.name.toLowerCase().includes(q) ||
+        m.tags.some(t => t.toLowerCase().includes(q))
+      );
+    }
+
+    const listEl = document.getElementById('memberList');
+    const countEl = document.getElementById('resultsCount');
+    const noEl = document.getElementById('noResults');
+    const clearBtn = document.getElementById('clearFilter');
+
+    if (filtered.length > 0) {
+      listEl.innerHTML = filtered.map(renderCard).join('');
+      noEl.style.display = 'none';
+    } else {
+      listEl.innerHTML = '';
+      noEl.style.display = 'block';
+    }
+
+    countEl.innerHTML = `<strong>${filtered.length}</strong> 件の事業者`;
+    clearBtn.style.display = (activeTag || searchQuery) ? 'inline' : 'none';
+
+    renderFilterTags();
+  }
+
+  // Events
+  document.getElementById('filterTags').addEventListener('click', (e) => {
+    if (e.target.classList.contains('filter-tag')) {
+      const tag = e.target.dataset.tag;
+      activeTag = activeTag === tag ? null : tag;
+      filterAndRender();
+    }
+  });
+
+  document.getElementById('clearFilter').addEventListener('click', () => {
+    activeTag = null;
+    searchQuery = '';
+    document.getElementById('search').value = '';
+    filterAndRender();
+  });
+
+  document.getElementById('search').addEventListener('input', (e) => {
+    searchQuery = e.target.value.trim();
+    filterAndRender();
+  });
+
+  // Scroll to top
+  const scrollBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    scrollBtn.classList.toggle('show', window.scrollY > 400);
+  });
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Init
+  filterAndRender();
+</script>
+
+</body>
+</html>
