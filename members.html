@@ -1041,9 +1041,21 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m18 15-6-6-6 6"/></svg>
 </button>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
+// === Firebase Init ===
+firebase.initializeApp({
+  apiKey: "AIzaSyBJ5TFzohZX31DPVOMejUEamN2ytJzCwMI",
+  authDomain: "buildersbase-59d77.firebaseapp.com",
+  projectId: "buildersbase-59d77",
+  storageBucket: "buildersbase-59d77.firebasestorage.app",
+  messagingSenderId: "486430842362",
+  appId: "1:486430842362:web:af92e17459e2a32e8d1843"
+});
+var db = firebase.firestore();
+
 // === Data ===
-const API_URL = 'https://script.google.com/macros/s/AKfycbxbJ4WiQB2j3ZVWSsbL5FpDuT14tSVm8wd7mTaW5t9JTbHnIMOMlH9WBKH832-86Usz/exec';
 let MEMBERS = [];
 
 // === Categories ===
@@ -1306,7 +1318,7 @@ scrollBtn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// === Load Members from API ===
+// === Load Members from Firestore ===
 async function loadMembers() {
   const loadingEl = document.getElementById('loadingState');
   const errorEl = document.getElementById('errorState');
@@ -1317,14 +1329,21 @@ async function loadMembers() {
   document.getElementById('emptyState').classList.remove('show');
 
   try {
-    const res = await fetch(API_URL + '?action=members');
-    const json = await res.json();
-
-    if (json.status !== 'success' || !Array.isArray(json.data)) {
-      throw new Error(json.message || 'Invalid response');
-    }
-
-    MEMBERS = json.data;
+    const snapshot = await db.collection('members').orderBy('sort').get();
+    MEMBERS = [];
+    snapshot.forEach(function(doc) {
+      var d = doc.data();
+      if (!d.visible || !d.company) return;
+      MEMBERS.push({
+        company: d.company,
+        name: d.name || '',
+        tags: Array.isArray(d.tags) ? d.tags : [],
+        type: d.type === '協力会員' ? 'supporter' : 'member',
+        img: d.img || '',
+        phone: d.phone || '',
+        url: d.url || ''
+      });
+    });
     loadingEl.style.display = 'none';
     filterAndRender();
   } catch (err) {

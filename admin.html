@@ -145,15 +145,14 @@
     border: 1px solid var(--gray-border);
   }
 
-  /* Toolbar */
-  .toolbar {
-    display: flex;
-    gap: 8px;
+  .btn-logout {
+    background: none;
+    color: var(--gray);
+    font-size: 13px;
+    padding: 8px 16px;
+    border: 1px solid var(--gray-border);
     margin-bottom: 16px;
-    flex-wrap: wrap;
   }
-
-  .toolbar .btn { flex: 1; min-width: 120px; }
 
   .member-count {
     font-size: 13px;
@@ -233,6 +232,7 @@
     display: flex;
     gap: 4px;
     flex-shrink: 0;
+    flex-wrap: wrap;
   }
 
   .badge {
@@ -502,16 +502,18 @@
 <!-- Login Screen -->
 <div id="loginScreen" class="login-screen">
   <h2>管理画面ログイン</h2>
-  <div id="loginError" class="login-error">パスワードが正しくありません</div>
-  <input type="password" id="passwordInput" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')doLogin()">
+  <div id="loginError" class="login-error"></div>
+  <input type="email" id="emailInput" placeholder="メールアドレス">
+  <input type="password" id="passwordInput" placeholder="パスワード" onkeydown="if(event.key==='Enter')doLogin()">
   <button class="btn btn-primary" onclick="doLogin()">ログイン</button>
 </div>
 
 <!-- Admin Screen -->
 <div id="adminScreen" style="display:none;">
   <div class="container">
-    <div class="toolbar">
-      <button class="btn btn-add" onclick="openAddForm()">+ 新規メンバーを追加</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <button class="btn btn-add" style="flex:1; margin-bottom:0; margin-right:8px;" onclick="openAddForm()">+ 新規メンバーを追加</button>
+      <button class="btn btn-logout" style="margin-bottom:0;" onclick="doLogout()">ログアウト</button>
     </div>
 
     <div id="memberCount" class="member-count"></div>
@@ -618,65 +620,79 @@
   <p>Builders Base【ビルダーズベース】メンバー管理</p>
 </div>
 
-<script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbxbJ4WiQB2j3ZVWSsbL5FpDuT14tSVm8wd7mTaW5t9JTbHnIMOMlH9WBKH832-86Usz/exec';
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
-let PASSWORD = '';
-let MEMBERS = [];
-let editingRow = null;
-let uploadedImgUrl = '';
-let pendingConfirmAction = null;
+<script>
+// === Firebase Init ===
+firebase.initializeApp({
+  apiKey: "AIzaSyBJ5TFzohZX31DPVOMejUEamN2ytJzCwMI",
+  authDomain: "buildersbase-59d77.firebaseapp.com",
+  projectId: "buildersbase-59d77",
+  storageBucket: "buildersbase-59d77.firebasestorage.app",
+  messagingSenderId: "486430842362",
+  appId: "1:486430842362:web:af92e17459e2a32e8d1843"
+});
+
+var auth = firebase.auth();
+var db = firebase.firestore();
+var storage = firebase.storage();
+
+var MEMBERS = [];
+var editingDocId = null;
+var uploadedImgUrl = '';
+var pendingConfirmAction = null;
 
 // === Auth ===
-async function doLogin() {
-  var pw = document.getElementById('passwordInput').value;
-  if (!pw) return;
-
-  try {
-    var res = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'auth', password: pw })
-    });
-    var json = await res.json();
-    if (json.status === 'success') {
-      PASSWORD = pw;
-      sessionStorage.setItem('admin_pw', pw);
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('adminScreen').style.display = 'block';
-      loadMembers();
-    } else {
-      document.getElementById('loginError').style.display = 'block';
-    }
-  } catch (err) {
-    showToast('通信エラーが発生しました', 'error');
-  }
-}
-
-// Check session
-(function() {
-  var saved = sessionStorage.getItem('admin_pw');
-  if (saved) {
-    PASSWORD = saved;
+auth.onAuthStateChanged(function(user) {
+  if (user) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminScreen').style.display = 'block';
     loadMembers();
+  } else {
+    document.getElementById('loginScreen').style.display = 'block';
+    document.getElementById('adminScreen').style.display = 'none';
   }
-})();
+});
+
+async function doLogin() {
+  var email = document.getElementById('emailInput').value.trim();
+  var pw = document.getElementById('passwordInput').value;
+  if (!email || !pw) return;
+
+  var errorEl = document.getElementById('loginError');
+  errorEl.style.display = 'none';
+
+  try {
+    await auth.signInWithEmailAndPassword(email, pw);
+  } catch (err) {
+    errorEl.textContent = 'メールアドレスまたはパスワードが正しくありません';
+    errorEl.style.display = 'block';
+  }
+}
+
+function doLogout() {
+  auth.signOut();
+}
 
 // === Load Members ===
 async function loadMembers() {
   document.getElementById('memberList').innerHTML = '<div class="loading"><div class="spinner"></div><p>読み込み中...</p></div>';
   try {
-    var res = await fetch(API_URL + '?action=adminMembers&password=' + encodeURIComponent(PASSWORD));
-    var json = await res.json();
-    if (json.status === 'success') {
-      MEMBERS = json.data;
-      renderMembers();
-    } else {
-      document.getElementById('memberList').innerHTML = '<div class="loading"><p>データの取得に失敗しました</p></div>';
-    }
+    var snapshot = await db.collection('members').orderBy('sort').get();
+    MEMBERS = [];
+    snapshot.forEach(function(doc) {
+      var d = doc.data();
+      d.id = doc.id;
+      MEMBERS.push(d);
+    });
+    renderMembers();
   } catch (err) {
-    document.getElementById('memberList').innerHTML = '<div class="loading"><p>通信エラーが発生しました</p></div>';
+    console.error(err);
+    document.getElementById('memberList').innerHTML = '<div class="loading"><p>データの取得に失敗しました</p></div>';
   }
 }
 
@@ -697,7 +713,7 @@ function renderMembers() {
     var hiddenClass = m.visible ? '' : ' hidden-member';
     var thumbHtml = m.img
       ? '<img class="member-thumb" src="' + escapeHtml(m.img) + '" onerror="this.style.display=\'none\'">'
-      : '<div class="member-thumb-placeholder">' + escapeHtml(m.company.charAt(0)) + '</div>';
+      : '<div class="member-thumb-placeholder">' + escapeHtml((m.company || '?').charAt(0)) + '</div>';
 
     var typeBadge = m.type === '協力会員'
       ? '<span class="badge badge-supporter">協力会員</span>'
@@ -707,12 +723,14 @@ function renderMembers() {
       ? '<span class="badge badge-visible">表示中</span>'
       : '<span class="badge badge-hidden">非表示</span>';
 
+    var tagsStr = Array.isArray(m.tags) ? m.tags.join(', ') : (m.tags || '');
+
     html += '<div class="member-row' + hiddenClass + '">'
       + thumbHtml
       + '<div class="member-info">'
       + '<h3>' + escapeHtml(m.company) + '</h3>'
-      + '<div class="meta">' + escapeHtml(m.name) + ' ・ 順: ' + m.sort + '</div>'
-      + '<div class="tags">' + escapeHtml(m.tags || '') + '</div>'
+      + '<div class="meta">' + escapeHtml(m.name) + ' ・ 順: ' + (m.sort || 9999) + '</div>'
+      + '<div class="tags">' + escapeHtml(tagsStr) + '</div>'
       + '</div>'
       + '<div class="member-badges">' + typeBadge + visBadge + '</div>'
       + '<div class="member-actions">'
@@ -726,7 +744,7 @@ function renderMembers() {
 
 // === Form ===
 function openAddForm() {
-  editingRow = null;
+  editingDocId = null;
   document.getElementById('formTitle').textContent = 'メンバーを追加';
   document.getElementById('formSubmitBtn').textContent = '追加する';
   clearForm();
@@ -736,22 +754,22 @@ function openAddForm() {
 
 function openEditForm(index) {
   var m = MEMBERS[index];
-  editingRow = m.row;
+  editingDocId = m.id;
   document.getElementById('formTitle').textContent = 'メンバーを編集';
   document.getElementById('formSubmitBtn').textContent = '更新する';
 
-  document.getElementById('fCompany').value = m.company;
-  document.getElementById('fName').value = m.name;
-  document.getElementById('fType').value = m.type;
-  document.getElementById('fSort').value = m.sort;
-  document.getElementById('fTags').value = m.tags;
-  document.getElementById('fPhone').value = m.phone;
-  document.getElementById('fUrl').value = m.url;
-  document.getElementById('fVisible').checked = m.visible;
+  document.getElementById('fCompany').value = m.company || '';
+  document.getElementById('fName').value = m.name || '';
+  document.getElementById('fType').value = m.type || '会員';
+  document.getElementById('fSort').value = m.sort || 9999;
+  document.getElementById('fTags').value = Array.isArray(m.tags) ? m.tags.join(', ') : (m.tags || '');
+  document.getElementById('fPhone').value = m.phone || '';
+  document.getElementById('fUrl').value = m.url || '';
+  document.getElementById('fVisible').checked = m.visible !== false;
 
   uploadedImgUrl = '';
   if (m.img) {
-    document.getElementById('fImgUrl').value = m.imgRaw || '';
+    document.getElementById('fImgUrl').value = m.img;
     document.getElementById('previewImg').src = m.img;
     document.getElementById('imagePreview').style.display = 'block';
     document.getElementById('imageUploadArea').style.display = 'none';
@@ -793,46 +811,42 @@ async function submitForm() {
   if (!name) { showToast('担当者名を入力してください', 'error'); return; }
 
   var imgValue = uploadedImgUrl || document.getElementById('fImgUrl').value.trim();
+  var tagsStr = document.getElementById('fTags').value.trim();
+  var tagsArr = tagsStr ? tagsStr.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t; }) : [];
 
-  var payload = {
-    action: editingRow ? 'updateMember' : 'addMember',
-    password: PASSWORD,
+  var memberData = {
     company: company,
     name: name,
     type: document.getElementById('fType').value,
-    sort: document.getElementById('fSort').value,
-    tags: document.getElementById('fTags').value.trim(),
+    sort: parseInt(document.getElementById('fSort').value) || 9999,
+    tags: tagsArr,
     img: imgValue,
     phone: document.getElementById('fPhone').value.trim(),
     url: document.getElementById('fUrl').value.trim(),
     visible: document.getElementById('fVisible').checked
   };
 
-  if (editingRow) payload.row = editingRow;
-
   var btn = document.getElementById('formSubmitBtn');
   btn.disabled = true;
   btn.textContent = '保存中...';
 
   try {
-    var res = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
-    var json = await res.json();
-    if (json.status === 'success') {
-      showToast(editingRow ? '更新しました' : '追加しました', 'success');
-      closeForm();
-      loadMembers();
+    if (editingDocId) {
+      await db.collection('members').doc(editingDocId).update(memberData);
+      showToast('更新しました', 'success');
     } else {
-      showToast('エラー: ' + (json.message || '保存に失敗しました'), 'error');
+      await db.collection('members').add(memberData);
+      showToast('追加しました', 'success');
     }
+    closeForm();
+    loadMembers();
   } catch (err) {
-    showToast('通信エラーが発生しました', 'error');
+    console.error(err);
+    showToast('保存に失敗しました: ' + err.message, 'error');
   }
 
   btn.disabled = false;
-  btn.textContent = editingRow ? '更新する' : '追加する';
+  btn.textContent = editingDocId ? '更新する' : '追加する';
 }
 
 // === Image Upload ===
@@ -850,46 +864,24 @@ async function handleImageSelect(input) {
   area.querySelector('p').textContent = 'アップロード中...';
 
   try {
-    var base64 = await fileToBase64(file);
-    var res = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: 'uploadImage',
-        password: PASSWORD,
-        base64: base64,
-        filename: file.name,
-        mimeType: file.type
-      })
-    });
-    var json = await res.json();
-    if (json.status === 'success') {
-      uploadedImgUrl = json.url;
-      document.getElementById('previewImg').src = json.url;
-      document.getElementById('imagePreview').style.display = 'block';
-      area.style.display = 'none';
-      document.getElementById('fImgUrl').value = json.url;
-      showToast('画像をアップロードしました', 'success');
-    } else {
-      showToast('画像アップロードに失敗しました', 'error');
-    }
+    var filename = 'members/' + Date.now() + '_' + file.name;
+    var ref = storage.ref(filename);
+    await ref.put(file);
+    var url = await ref.getDownloadURL();
+
+    uploadedImgUrl = url;
+    document.getElementById('previewImg').src = url;
+    document.getElementById('imagePreview').style.display = 'block';
+    area.style.display = 'none';
+    document.getElementById('fImgUrl').value = url;
+    showToast('画像をアップロードしました', 'success');
   } catch (err) {
-    showToast('画像アップロード中にエラーが発生しました', 'error');
+    console.error(err);
+    showToast('画像アップロードに失敗しました', 'error');
   }
 
   area.classList.remove('uploading');
   area.querySelector('p').textContent = 'タップして画像を選択';
-}
-
-function fileToBase64(file) {
-  return new Promise(function(resolve, reject) {
-    var reader = new FileReader();
-    reader.onload = function() {
-      var result = reader.result.split(',')[1];
-      resolve(result);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 }
 
 function handleUrlInput(val) {
@@ -913,7 +905,7 @@ function removeImage() {
 function confirmDelete(index) {
   var m = MEMBERS[index];
   document.getElementById('confirmMessage').textContent = '「' + m.company + '」を削除しますか？';
-  pendingConfirmAction = function() { deleteMember(m.row); };
+  pendingConfirmAction = function() { deleteMember(m.id); };
   document.getElementById('confirmOverlay').classList.add('active');
 }
 
@@ -927,21 +919,14 @@ function confirmAction() {
   closeConfirm();
 }
 
-async function deleteMember(row) {
+async function deleteMember(docId) {
   try {
-    var res = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'deleteMember', password: PASSWORD, row: row })
-    });
-    var json = await res.json();
-    if (json.status === 'success') {
-      showToast('削除しました', 'success');
-      loadMembers();
-    } else {
-      showToast('削除に失敗しました', 'error');
-    }
+    await db.collection('members').doc(docId).delete();
+    showToast('削除しました', 'success');
+    loadMembers();
   } catch (err) {
-    showToast('通信エラーが発生しました', 'error');
+    console.error(err);
+    showToast('削除に失敗しました', 'error');
   }
 }
 
