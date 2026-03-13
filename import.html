@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メンバーデータ インポート</title>
+<style>
+  body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+  h1 { font-size: 20px; margin-bottom: 20px; }
+  .status { padding: 12px; border-radius: 8px; margin-bottom: 8px; font-size: 14px; }
+  .ok { background: #f0fdf4; color: #16a34a; }
+  .err { background: #fef2f2; color: #dc2626; }
+  .info { background: #f3f4f6; color: #6b7280; }
+  button { padding: 14px 24px; background: #e8960c; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: 0.5; }
+  #log { margin-top: 20px; }
+  .login-form { margin-bottom: 20px; }
+  .login-form input { display: block; width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>メンバーデータ Firestore インポート</h1>
+
+<div class="login-form">
+  <input type="email" id="email" placeholder="メールアドレス">
+  <input type="password" id="password" placeholder="パスワード">
+</div>
+
+<button id="importBtn" onclick="startImport()">インポート開始（29件）</button>
+<div id="log"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyBJ5TFzohZX31DPVOMejUEamN2ytJzCwMI",
+  authDomain: "buildersbase-59d77.firebaseapp.com",
+  projectId: "buildersbase-59d77",
+  storageBucket: "buildersbase-59d77.firebasestorage.app",
+  messagingSenderId: "486430842362",
+  appId: "1:486430842362:web:af92e17459e2a32e8d1843"
+});
+
+var auth = firebase.auth();
+var db = firebase.firestore();
+
+var MEMBERS = [
+  {"company":"novus","name":"松本 雄一","tags":["施工管理"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_0f0454e5-8125-483f-9a85-ff483cb97f01.webp","phone":"070-8955-1449","url":"","sort":1,"visible":true},
+  {"company":"株式会社鈴洋","name":"寺本 竜司","tags":["水道設備工事"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_be7cca8d-4b24-4927-86d4-072b72cc811e.webp","phone":"090-7805-5609","url":"https://suzuhiro.studio.site/","sort":2,"visible":true},
+  {"company":"小松空調","name":"小松 涼星","tags":["空調設備","エアコン設置"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_8f6977b3-9b9b-4291-9fd6-64e651bfd207.webp","phone":"080-1751-0829","url":"","sort":3,"visible":true},
+  {"company":"株式会社ピジョン","name":"矢作 政人","tags":["床/フローリング","木工事全般"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_7a2f5de4-fa79-43b3-a66b-4901a0aadc5f.webp","phone":"090-3064-5904","url":"https://pigeon-arc.studio.site/","sort":4,"visible":true},
+  {"company":"株式会社門大","name":"澤田 大地","tags":["内装工事仕上業","軽量ボード","床/フローリング","荷揚げ"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_1fab8438-97e1-4c81-8160-bb4931173085.webp","phone":"03-5797-9940","url":"https://mondomanabi.com/","sort":5,"visible":true},
+  {"company":"R.Planning","name":"金井 梨香","tags":["図面作成","設計"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_7e1081cc-52e8-40af-93bd-cf7b158aa24d.webp","phone":"080-4006-3107","url":"https://r-planning.studio.site/","sort":6,"visible":true},
+  {"company":"株式会社三信","name":"佐藤 文章","tags":["解体","産業廃棄物処理業"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_91e95106-32a8-4bc2-9d54-013590abaac4.webp","phone":"080-3276-0335","url":"https://www.sanshin-misato.com/","sort":7,"visible":true},
+  {"company":"株式会社オフオン","name":"田中 克幸","tags":["空調設備","通信設備工事","電気設備工事"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_da8d3e45-d1fe-4e94-880a-9857a7fd6b31.webp","phone":"070-1306-4515","url":"http://www.ofuon.co.jp/","sort":8,"visible":true},
+  {"company":"DOES","name":"年岡 大吾","tags":["塗装"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_856447bb-1f46-4024-a7b3-e305bc3bf66d.webp","phone":"080-4125-9839","url":"https://does-paint.studio.site/","sort":9,"visible":true},
+  {"company":"株式会社スマイル設備","name":"今野 良也","tags":["リフォーム"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_f7baeb9b-4789-4abf-9e33-1964cfc2bb27.webp","phone":"090-8786-1137","url":"https://smile-setsubi.jp/","sort":10,"visible":true},
+  {"company":"株式会社クラファイド","name":"武藤 祐輔","tags":["軽天","内装仕上"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_71f2bec6-892a-4813-85d5-63bd85f5934b.webp","phone":"090-6790-3659","url":"https://crafide.com/","sort":11,"visible":true},
+  {"company":"株式会社シンカワ","name":"近藤 信也","tags":["総合建築"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_8e5581c6-7891-4fb5-9541-b25ece264a68.webp","phone":"090-2461-6478","url":"https://shin-kawa.studio.site/","sort":12,"visible":true},
+  {"company":"株式会社ci-m.","name":"小松 毅","tags":["防水","塗装"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_fcbda410-9d1d-483d-8c6f-76e8095fee37.webp","phone":"090-6193-0570","url":"https://ci-m.work/","sort":13,"visible":true},
+  {"company":"株式会社MAHALO","name":"佐々木 晴一","tags":["リフォーム"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_9f55b1b5-238b-4862-b367-08d3f1eb8b94.webp","phone":"070-9274-7774","url":"https://mahalo-arc.studio.site/","sort":14,"visible":true},
+  {"company":"U.N.E","name":"宇根 司","tags":["家具製作"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_4cea63f2-b89f-4d60-aaba-53b5da0e6da1.webp","phone":"090-7370-5617","url":"https://une-tekunicalmob.studio.site/","sort":15,"visible":true},
+  {"company":"株式会社リプラス","name":"直井 啓太郎","tags":["リフォーム"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_b783482c-a81c-4200-ac69-bde81593d0a1.webp","phone":"080-6789-4109","url":"https://replus-arc.studio.site/","sort":16,"visible":true},
+  {"company":"株式会社Uスタイル","name":"牛尾 信樹","tags":["防水","リフォーム"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_aa39a421-0203-4cee-b903-6d97656b058d.webp","phone":"090-6658-0170","url":"https://reform-ustyle.studio.site/","sort":17,"visible":true},
+  {"company":"architect studio M","name":"藤原 盛幸","tags":["設計"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_f3735767-b55e-482d-967a-c77a79a3499a.webp","phone":"080-5520-8109","url":"https://architectstudio-m.studio.site/","sort":18,"visible":true},
+  {"company":"株式会社ディオ","name":"三浦 洋介","tags":["リフォーム","施工管理"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_88dd0d8c-0937-47eb-b7f6-cd0d87f3b6ae.webp","phone":"03-6384-7984","url":"https://www.diokk.co.jp/","sort":19,"visible":true},
+  {"company":"株式会社DA-1","name":"松田 大地","tags":["リフォーム"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_795782a2-2b7b-487f-90e1-7675092e43b2.webp","phone":"070-7564-8299","url":"https://arc-da-1.studio.site/","sort":20,"visible":true},
+  {"company":"KUD","name":"國府田 拓郎","tags":["リフォーム","内装"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_dd2979dd-2228-43e5-883a-a99038ae2f6c.webp","phone":"090-8009-6681","url":"https://reform-kud.studio.site/","sort":21,"visible":true},
+  {"company":"株式会社NBS","name":"長沼 和人","tags":["リフォーム","設備配管工事"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_973cb285-b611-45ca-a9cf-abf4d475423f.webp","phone":"080-1043-6126","url":"https://nbs-reform.studio.site/","sort":22,"visible":true},
+  {"company":"株式会社たつとら","name":"越野 潤一","tags":["内装"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-350x299_webp_b511d196-87d3-4374-9faf-22183b87faeb.jpg","phone":"090-7744-9448","url":"https://tatsutora.co.jp/","sort":23,"visible":true},
+  {"company":"株式会社高清","name":"高橋 賢一","tags":["リフォーム","防水","外壁改修"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-438x292_webp_7edd9c4c-aded-4db6-9fd5-60fe04bc73dd.jpg","phone":"090-1998-1272","url":"https://www.kosei-sogyo.com/","sort":24,"visible":true},
+  {"company":"株式会社ＡＲＭＹ'Ｓ","name":"遠峰 圭佑","tags":[],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_7bf01fb2-8a01-4370-b765-d8224bda91ee.webp","phone":"080-7006-0099","url":"","sort":25,"visible":true},
+  {"company":"SJDESIGN","name":"花本 昌樹","tags":["写真撮影"],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_f48eb381-dc42-4f7e-b92e-d43793e58911.webp","phone":"090-2903-9637","url":"https://sjdesign.jp/","sort":26,"visible":true},
+  {"company":"株式会社グラティ","name":"外 大樹","tags":[],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_e4147435-0fc0-4c25-86bb-43a72402026e.webp","phone":"","url":"","sort":27,"visible":true},
+  {"company":"株式会社リスタクト","name":"上田平","tags":[],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_e4147435-0fc0-4c25-86bb-43a72402026e.webp","phone":"","url":"","sort":28,"visible":true},
+  {"company":"株式会社ワークス","name":"金川 義隆","tags":[],"type":"会員","img":"https://storage.googleapis.com/studio-cms-assets/projects/7kadzdGbO3/s-1200x630_v-fms_webp_e4147435-0fc0-4c25-86bb-43a72402026e.webp","phone":"090-9317-3132","url":"https://works.tokyo.jp/","sort":29,"visible":true}
+];
+
+function log(msg, type) {
+  var el = document.createElement('div');
+  el.className = 'status ' + (type || 'info');
+  el.textContent = msg;
+  document.getElementById('log').appendChild(el);
+}
+
+async function startImport() {
+  var email = document.getElementById('email').value.trim();
+  var pw = document.getElementById('password').value;
+  if (!email || !pw) { log('メールアドレスとパスワードを入力してください', 'err'); return; }
+
+  var btn = document.getElementById('importBtn');
+  btn.disabled = true;
+  btn.textContent = 'インポート中...';
+
+  try {
+    log('ログイン中...');
+    await auth.signInWithEmailAndPassword(email, pw);
+    log('ログイン成功', 'ok');
+  } catch(e) {
+    log('ログイン失敗: ' + e.message, 'err');
+    btn.disabled = false;
+    btn.textContent = 'インポート開始';
+    return;
+  }
+
+  var success = 0;
+  var fail = 0;
+
+  for (var i = 0; i < MEMBERS.length; i++) {
+    var m = MEMBERS[i];
+    try {
+      await db.collection('members').add(m);
+      success++;
+      log((i+1) + '/' + MEMBERS.length + ' ' + m.company + ' ... OK', 'ok');
+    } catch(e) {
+      fail++;
+      log((i+1) + '/' + MEMBERS.length + ' ' + m.company + ' ... 失敗: ' + e.message, 'err');
+    }
+  }
+
+  log('完了: 成功 ' + success + ' 件 / 失敗 ' + fail + ' 件', success > 0 ? 'ok' : 'err');
+  btn.textContent = '完了';
+}
+</script>
+</body>
+</html>
