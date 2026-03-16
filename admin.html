@@ -16,6 +16,8 @@
     --white: #ffffff;
     --red: #dc2626;
     --green: #16a34a;
+    --blue: #007CFF;
+    --blue-bg: #EBF4FF;
     --radius: 12px;
   }
 
@@ -130,13 +132,24 @@
     border: 1px solid var(--red);
   }
 
+  .btn-pin {
+    background: var(--blue-bg);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    font-size: 14px;
+    padding: 4px 10px;
+  }
+
+  .btn-pin.active {
+    background: var(--blue);
+    color: var(--white);
+  }
+
   .btn-add {
     background: var(--orange);
     color: var(--white);
-    width: 100%;
     padding: 14px;
     font-size: 16px;
-    margin-bottom: 16px;
   }
 
   .btn-secondary {
@@ -145,19 +158,66 @@
     border: 1px solid var(--gray-border);
   }
 
+  .btn-shuffle {
+    background: var(--blue-bg);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .btn-shuffle:hover { background: var(--blue); color: var(--white); }
+
   .btn-logout {
     background: none;
     color: var(--gray);
     font-size: 13px;
     padding: 8px 16px;
     border: 1px solid var(--gray-border);
-    margin-bottom: 16px;
   }
+
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+
+  .toolbar .btn-add { flex: 1; }
 
   .member-count {
     font-size: 13px;
     color: var(--gray);
     margin-bottom: 12px;
+  }
+
+  /* Group heading */
+  .group-heading {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 16px 8px;
+    color: var(--gray);
+    border-bottom: 2px solid var(--black);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .group-heading .group-count {
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--gray-light);
+    color: var(--gray);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  .group-heading.supporter {
+    border-bottom-color: var(--green);
+    margin-top: 24px;
   }
 
   /* Member cards (admin list) */
@@ -167,7 +227,7 @@
     background: var(--white);
     border: 1px solid var(--gray-border);
     border-radius: var(--radius);
-    padding: 16px;
+    padding: 12px 16px;
     margin-bottom: 8px;
     display: flex;
     gap: 12px;
@@ -179,9 +239,14 @@
     border-style: dashed;
   }
 
+  .member-row.pinned-member {
+    border-color: var(--blue);
+    background: #f8fbff;
+  }
+
   .member-thumb {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
@@ -189,15 +254,15 @@
   }
 
   .member-thumb-placeholder {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 8px;
     background: var(--orange);
     color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     flex-shrink: 0;
   }
@@ -247,11 +312,13 @@
   .badge-supporter { background: #f0fdf4; color: var(--green); }
   .badge-hidden { background: #fef2f2; color: var(--red); }
   .badge-visible { background: #f0fdf4; color: var(--green); }
+  .badge-pinned { background: var(--blue-bg); color: var(--blue); }
 
   .member-actions {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     flex-shrink: 0;
+    flex-wrap: wrap;
   }
 
   /* Form / Modal */
@@ -511,9 +578,10 @@
 <!-- Admin Screen -->
 <div id="adminScreen" style="display:none;">
   <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-      <button class="btn btn-add" style="flex:1; margin-bottom:0; margin-right:8px;" onclick="openAddForm()">+ 新規メンバーを追加</button>
-      <button class="btn btn-logout" style="margin-bottom:0;" onclick="doLogout()">ログアウト</button>
+    <div class="toolbar">
+      <button class="btn btn-add" onclick="openAddForm()">+ 新規メンバーを追加</button>
+      <button class="btn btn-shuffle" onclick="confirmShuffle()">&#x1F500; シャッフル</button>
+      <button class="btn btn-logout" onclick="doLogout()">ログアウト</button>
     </div>
 
     <div id="memberCount" class="member-count"></div>
@@ -552,7 +620,7 @@
       <div class="form-group">
         <label>表示順</label>
         <input type="number" id="fSort" value="9999" min="1">
-        <div class="hint">小さいほど上に表示</div>
+        <div class="hint">シャッフル時に自動設定されます</div>
       </div>
     </div>
 
@@ -595,6 +663,13 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <div class="checkbox-row">
+        <input type="checkbox" id="fPinned">
+        <label for="fPinned">優先表示（グループ内で上部に固定）</label>
+      </div>
+    </div>
+
     <div class="form-actions">
       <button class="btn btn-secondary" onclick="closeForm()">キャンセル</button>
       <button class="btn btn-primary" id="formSubmitBtn" onclick="submitForm()">追加する</button>
@@ -617,7 +692,7 @@
 <div id="toast" class="toast"></div>
 
 <div class="footer">
-  <p>Builders Base【ビルダーズベース】メンバー管理</p>
+  <p>Builders Base メンバー管理</p>
 </div>
 
 <!-- Firebase SDK -->
@@ -645,6 +720,27 @@ var MEMBERS = [];
 var editingDocId = null;
 var uploadedImgUrl = '';
 var pendingConfirmAction = null;
+
+// Sort ranges
+var SORT_MEMBER_PINNED_MIN = 1;
+var SORT_MEMBER_PINNED_MAX = 100;
+var SORT_MEMBER_NORMAL_MIN = 101;
+var SORT_MEMBER_NORMAL_MAX = 500;
+var SORT_SUPPORTER_PINNED_MIN = 501;
+var SORT_SUPPORTER_PINNED_MAX = 600;
+var SORT_SUPPORTER_NORMAL_MIN = 601;
+var SORT_SUPPORTER_NORMAL_MAX = 1000;
+
+function isSupporterType(type) {
+  return type === '協力会員';
+}
+
+function getSortRange(type, pinned) {
+  if (isSupporterType(type)) {
+    return pinned ? [SORT_SUPPORTER_PINNED_MIN, SORT_SUPPORTER_PINNED_MAX] : [SORT_SUPPORTER_NORMAL_MIN, SORT_SUPPORTER_NORMAL_MAX];
+  }
+  return pinned ? [SORT_MEMBER_PINNED_MIN, SORT_MEMBER_PINNED_MAX] : [SORT_MEMBER_NORMAL_MIN, SORT_MEMBER_NORMAL_MAX];
+}
 
 // === Auth ===
 auth.onAuthStateChanged(function(user) {
@@ -707,39 +803,181 @@ function renderMembers() {
     return;
   }
 
+  // Group members
+  var memberGroup = MEMBERS.filter(function(m) { return !isSupporterType(m.type); });
+  var supporterGroup = MEMBERS.filter(function(m) { return isSupporterType(m.type); });
+
+  // Sort within groups: pinned first, then by sort
+  function groupSort(a, b) {
+    var ap = a.pinned ? 0 : 1;
+    var bp = b.pinned ? 0 : 1;
+    if (ap !== bp) return ap - bp;
+    return (a.sort || 9999) - (b.sort || 9999);
+  }
+  memberGroup.sort(groupSort);
+  supporterGroup.sort(groupSort);
+
   var html = '';
+
+  // Member group
+  html += '<div class="group-heading">メンバー会員 <span class="group-count">' + memberGroup.length + '件</span></div>';
+  for (var i = 0; i < memberGroup.length; i++) {
+    html += renderMemberRow(memberGroup[i]);
+  }
+  if (memberGroup.length === 0) {
+    html += '<div class="loading" style="padding:20px;"><p>メンバー会員がいません</p></div>';
+  }
+
+  // Supporter group
+  html += '<div class="group-heading supporter">協力会員 <span class="group-count">' + supporterGroup.length + '件</span></div>';
+  for (var j = 0; j < supporterGroup.length; j++) {
+    html += renderMemberRow(supporterGroup[j]);
+  }
+  if (supporterGroup.length === 0) {
+    html += '<div class="loading" style="padding:20px;"><p>協力会員がいません</p></div>';
+  }
+
+  container.innerHTML = html;
+}
+
+function renderMemberRow(m) {
+  var idx = MEMBERS.indexOf(m);
+  var hiddenClass = m.visible ? '' : ' hidden-member';
+  var pinnedClass = m.pinned ? ' pinned-member' : '';
+  var thumbHtml = m.img
+    ? '<img class="member-thumb" src="' + escapeHtml(m.img) + '" onerror="this.style.display=\'none\'">'
+    : '<div class="member-thumb-placeholder">' + escapeHtml((m.company || '?').charAt(0)) + '</div>';
+
+  var typeBadge = isSupporterType(m.type)
+    ? '<span class="badge badge-supporter">協力会員</span>'
+    : '<span class="badge badge-member">メンバー</span>';
+
+  var visBadge = m.visible
+    ? '<span class="badge badge-visible">表示中</span>'
+    : '<span class="badge badge-hidden">非表示</span>';
+
+  var pinnedBadge = m.pinned
+    ? '<span class="badge badge-pinned">&#x1F4CC; 固定</span>'
+    : '';
+
+  var tagsStr = Array.isArray(m.tags) ? m.tags.join(', ') : (m.tags || '');
+
+  var pinBtnClass = m.pinned ? 'btn btn-small btn-pin active' : 'btn btn-small btn-pin';
+  var pinBtnText = m.pinned ? '&#x1F4CC;' : '&#x1F4CC;';
+
+  return '<div class="member-row' + hiddenClass + pinnedClass + '">'
+    + thumbHtml
+    + '<div class="member-info">'
+    + '<h3>' + escapeHtml(m.company) + '</h3>'
+    + '<div class="meta">' + escapeHtml(m.name) + ' ・ 順: ' + (m.sort || 9999) + '</div>'
+    + '<div class="tags">' + escapeHtml(tagsStr) + '</div>'
+    + '</div>'
+    + '<div class="member-badges">' + typeBadge + visBadge + pinnedBadge + '</div>'
+    + '<div class="member-actions">'
+    + '<button class="' + pinBtnClass + '" onclick="togglePin(' + idx + ')" title="優先表示の切り替え">' + pinBtnText + '</button>'
+    + '<button class="btn btn-small btn-edit" onclick="openEditForm(' + idx + ')">編集</button>'
+    + '<button class="btn btn-small btn-delete" onclick="confirmDelete(' + idx + ')">削除</button>'
+    + '</div>'
+    + '</div>';
+}
+
+// === Pin Toggle ===
+async function togglePin(index) {
+  var m = MEMBERS[index];
+  var newPinned = !m.pinned;
+
+  try {
+    // Calculate new sort value
+    var range = getSortRange(m.type, newPinned);
+    var newSort = Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];
+
+    await db.collection('members').doc(m.id).update({
+      pinned: newPinned,
+      sort: newSort
+    });
+    showToast(newPinned ? '優先表示に設定しました' : '優先表示を解除しました', 'success');
+    loadMembers();
+  } catch (err) {
+    console.error(err);
+    showToast('更新に失敗しました', 'error');
+  }
+}
+
+// === Shuffle ===
+function confirmShuffle() {
+  document.getElementById('confirmMessage').textContent = '全メンバーの表示順をシャッフルしますか？（メンバー会員・協力会員それぞれの中でランダムに並び替えます）';
+  document.getElementById('confirmBtn').textContent = 'シャッフルする';
+  document.getElementById('confirmBtn').className = 'btn btn-shuffle';
+  pendingConfirmAction = doShuffle;
+  document.getElementById('confirmOverlay').classList.add('active');
+}
+
+async function doShuffle() {
+  showToast('シャッフル中...', '');
+
+  // Classify into 4 groups
+  var memberPinned = [];
+  var memberNormal = [];
+  var supporterPinned = [];
+  var supporterNormal = [];
+
   for (var i = 0; i < MEMBERS.length; i++) {
     var m = MEMBERS[i];
-    var hiddenClass = m.visible ? '' : ' hidden-member';
-    var thumbHtml = m.img
-      ? '<img class="member-thumb" src="' + escapeHtml(m.img) + '" onerror="this.style.display=\'none\'">'
-      : '<div class="member-thumb-placeholder">' + escapeHtml((m.company || '?').charAt(0)) + '</div>';
-
-    var typeBadge = m.type === '協力会員'
-      ? '<span class="badge badge-supporter">協力会員</span>'
-      : '<span class="badge badge-member">メンバー</span>';
-
-    var visBadge = m.visible
-      ? '<span class="badge badge-visible">表示中</span>'
-      : '<span class="badge badge-hidden">非表示</span>';
-
-    var tagsStr = Array.isArray(m.tags) ? m.tags.join(', ') : (m.tags || '');
-
-    html += '<div class="member-row' + hiddenClass + '">'
-      + thumbHtml
-      + '<div class="member-info">'
-      + '<h3>' + escapeHtml(m.company) + '</h3>'
-      + '<div class="meta">' + escapeHtml(m.name) + ' ・ 順: ' + (m.sort || 9999) + '</div>'
-      + '<div class="tags">' + escapeHtml(tagsStr) + '</div>'
-      + '</div>'
-      + '<div class="member-badges">' + typeBadge + visBadge + '</div>'
-      + '<div class="member-actions">'
-      + '<button class="btn btn-small btn-edit" onclick="openEditForm(' + i + ')">編集</button>'
-      + '<button class="btn btn-small btn-delete" onclick="confirmDelete(' + i + ')">削除</button>'
-      + '</div>'
-      + '</div>';
+    if (isSupporterType(m.type)) {
+      if (m.pinned) supporterPinned.push(m);
+      else supporterNormal.push(m);
+    } else {
+      if (m.pinned) memberPinned.push(m);
+      else memberNormal.push(m);
+    }
   }
-  container.innerHTML = html;
+
+  // Shuffle arrays
+  function shuffleArray(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  shuffleArray(memberPinned);
+  shuffleArray(memberNormal);
+  shuffleArray(supporterPinned);
+  shuffleArray(supporterNormal);
+
+  // Assign sort values
+  function assignSorts(group, min, max) {
+    var updates = [];
+    for (var i = 0; i < group.length; i++) {
+      var sortVal = min + Math.floor((max - min) * i / Math.max(group.length, 1));
+      updates.push({ id: group[i].id, sort: sortVal });
+    }
+    return updates;
+  }
+
+  var allUpdates = []
+    .concat(assignSorts(memberPinned, SORT_MEMBER_PINNED_MIN, SORT_MEMBER_PINNED_MAX))
+    .concat(assignSorts(memberNormal, SORT_MEMBER_NORMAL_MIN, SORT_MEMBER_NORMAL_MAX))
+    .concat(assignSorts(supporterPinned, SORT_SUPPORTER_PINNED_MIN, SORT_SUPPORTER_PINNED_MAX))
+    .concat(assignSorts(supporterNormal, SORT_SUPPORTER_NORMAL_MIN, SORT_SUPPORTER_NORMAL_MAX));
+
+  try {
+    // Batch update (max 500 per batch)
+    var batch = db.batch();
+    for (var k = 0; k < allUpdates.length; k++) {
+      var ref = db.collection('members').doc(allUpdates[k].id);
+      batch.update(ref, { sort: allUpdates[k].sort });
+    }
+    await batch.commit();
+    showToast('シャッフルしました', 'success');
+    loadMembers();
+  } catch (err) {
+    console.error(err);
+    showToast('シャッフルに失敗しました', 'error');
+  }
 }
 
 // === Form ===
@@ -749,6 +987,7 @@ function openAddForm() {
   document.getElementById('formSubmitBtn').textContent = '追加する';
   clearForm();
   document.getElementById('fVisible').checked = true;
+  document.getElementById('fPinned').checked = false;
   document.getElementById('formModal').classList.add('active');
 }
 
@@ -766,6 +1005,7 @@ function openEditForm(index) {
   document.getElementById('fPhone').value = m.phone || '';
   document.getElementById('fUrl').value = m.url || '';
   document.getElementById('fVisible').checked = m.visible !== false;
+  document.getElementById('fPinned').checked = m.pinned === true;
 
   uploadedImgUrl = '';
   if (m.img) {
@@ -797,6 +1037,7 @@ function clearForm() {
   document.getElementById('fUrl').value = '';
   document.getElementById('fImgUrl').value = '';
   document.getElementById('fVisible').checked = true;
+  document.getElementById('fPinned').checked = false;
   uploadedImgUrl = '';
   document.getElementById('imagePreview').style.display = 'none';
   document.getElementById('imageUploadArea').style.display = 'block';
@@ -814,16 +1055,27 @@ async function submitForm() {
   var tagsStr = document.getElementById('fTags').value.trim();
   var tagsArr = tagsStr ? tagsStr.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t; }) : [];
 
+  var type = document.getElementById('fType').value;
+  var pinned = document.getElementById('fPinned').checked;
+  var sortVal = parseInt(document.getElementById('fSort').value) || 9999;
+
+  // Auto-assign sort range if adding new or type/pin changed
+  if (!editingDocId) {
+    var range = getSortRange(type, pinned);
+    sortVal = Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];
+  }
+
   var memberData = {
     company: company,
     name: name,
-    type: document.getElementById('fType').value,
-    sort: parseInt(document.getElementById('fSort').value) || 9999,
+    type: type,
+    sort: sortVal,
     tags: tagsArr,
     img: imgValue,
     phone: document.getElementById('fPhone').value.trim(),
     url: document.getElementById('fUrl').value.trim(),
-    visible: document.getElementById('fVisible').checked
+    visible: document.getElementById('fVisible').checked,
+    pinned: pinned
   };
 
   var btn = document.getElementById('formSubmitBtn');
@@ -832,6 +1084,12 @@ async function submitForm() {
 
   try {
     if (editingDocId) {
+      // If type or pinned changed, recalculate sort
+      var existing = MEMBERS.find(function(m) { return m.id === editingDocId; });
+      if (existing && (existing.type !== type || existing.pinned !== pinned)) {
+        var newRange = getSortRange(type, pinned);
+        memberData.sort = Math.floor(Math.random() * (newRange[1] - newRange[0] + 1)) + newRange[0];
+      }
       await db.collection('members').doc(editingDocId).update(memberData);
       showToast('更新しました', 'success');
     } else {
@@ -854,7 +1112,6 @@ async function handleImageSelect(input) {
   if (!input.files || !input.files[0]) return;
   var file = input.files[0];
 
-  // ファイル形式チェック
   var allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
   if (allowedTypes.indexOf(file.type) === -1) {
     showToast('JPG, PNG, WebP, GIF形式の画像を選択してください', 'error');
@@ -873,7 +1130,6 @@ async function handleImageSelect(input) {
   area.querySelector('p').textContent = 'アップロード中...';
 
   try {
-    // ファイル名をタイムスタンプ+拡張子のみにサニタイズ（日本語・特殊文字を回避）
     var ext = file.name.split('.').pop().toLowerCase();
     var filename = 'members/' + Date.now() + '.' + ext;
     var ref = storage.ref(filename);
@@ -922,6 +1178,8 @@ function removeImage() {
 function confirmDelete(index) {
   var m = MEMBERS[index];
   document.getElementById('confirmMessage').textContent = '「' + m.company + '」を削除しますか？';
+  document.getElementById('confirmBtn').textContent = '削除する';
+  document.getElementById('confirmBtn').className = 'btn btn-delete';
   pendingConfirmAction = function() { deleteMember(m.id); };
   document.getElementById('confirmOverlay').classList.add('active');
 }

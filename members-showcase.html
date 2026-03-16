@@ -439,6 +439,7 @@
       snapshot.forEach(function(doc) {
         var d = doc.data();
         if (!d.visible || !d.company) return;
+        if (d.type === '協力会員') return;
         allMembers.push({
           company: d.company,
           name: d.name || '',
