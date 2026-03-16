@@ -13,7 +13,7 @@
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     /* === Reset === */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,29 +41,41 @@
       --shadow-lg: 0 12px 32px rgba(0,0,0,0.1);
       --radius: 12px;
       --radius-sm: 8px;
+      --shadow-xl: 0 20px 48px rgba(0,0,0,0.12);
+      --blue-glow: 0 0 24px rgba(0,124,255,0.15);
     }
 
     /* === Layout === */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
     .section { padding: 80px 0; }
     .section-dark { background: var(--gray-900); color: var(--white); }
-    .section-light { background: var(--gray-50); }
+    .section-light { background-color: var(--gray-50); background-image: radial-gradient(circle, var(--gray-300) 0.5px, transparent 0.5px); background-size: 24px 24px; }
     .section-label { display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
     .section-title { font-size: 28px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; }
     .section-subtitle { font-size: 16px; color: var(--gray-500); line-height: 1.8; max-width: 640px; }
     .section-center { text-align: center; }
     .section-center .section-subtitle { margin: 0 auto; }
 
+    /* === Numbers Section Mobile === */
+    #numbers .container > div { grid-template-columns: repeat(2, 1fr) !important; gap: 32px 16px !important; }
+    #numbers .container > div > div > div:first-child { font-size: 36px !important; }
+    #numbers .container > div > div > div:first-child span { font-size: 18px !important; }
+
     @media (min-width: 768px) {
       .container { padding: 0 40px; }
       .section { padding: 120px 0; }
       .section-title { font-size: 36px; }
       .section-subtitle { font-size: 18px; }
+      #numbers .container > div { grid-template-columns: repeat(4, 1fr) !important; }
+      #numbers .container > div > div > div:first-child { font-size: 48px !important; }
+      #numbers .container > div > div > div:first-child span { font-size: 24px !important; }
     }
 
     /* === Buttons === */
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 32px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 32px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; text-decoration: none; position: relative; overflow: hidden; }
     .btn-primary { background: var(--blue); color: var(--white); }
+    .btn-primary::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.5s; }
+    .btn-primary:hover::after { left: 100%; }
     .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
     .btn-secondary { background: var(--white); color: var(--blue); border: 2px solid var(--blue); }
     .btn-secondary:hover { background: var(--blue-light); }
@@ -101,6 +113,14 @@
     .mobile-menu-link { font-size: 20px; font-weight: 600; color: var(--white); }
     .mobile-menu-cta { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
     .mobile-menu-cta .btn { width: 100%; text-align: center; }
+    .mobile-menu.open .mobile-menu-link { animation: menuSlideIn 0.4s forwards; opacity: 0; }
+    .mobile-menu.open .mobile-menu-link:nth-child(1) { animation-delay: 0.1s; }
+    .mobile-menu.open .mobile-menu-link:nth-child(2) { animation-delay: 0.15s; }
+    .mobile-menu.open .mobile-menu-link:nth-child(3) { animation-delay: 0.2s; }
+    .mobile-menu.open .mobile-menu-link:nth-child(4) { animation-delay: 0.25s; }
+    .mobile-menu.open .mobile-menu-link:nth-child(5) { animation-delay: 0.3s; }
+    .mobile-menu.open .mobile-menu-link:nth-child(6) { animation-delay: 0.35s; }
+    @keyframes menuSlideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
     @media (min-width: 1024px) {
       .nav-inner { padding: 0 40px; }
@@ -112,12 +132,22 @@
     /* === Hero === */
     .hero { position: relative; min-height: 100vh; display: flex; align-items: center; background: var(--gray-900); overflow: hidden; }
     .hero-bg { position: absolute; inset: 0; background-image: url('assets/images/hero-members.jpg'); background-size: cover; background-position: center; opacity: 0.4; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%); }
-    .hero-content { position: relative; z-index: 1; padding: 120px 0 80px; }
-    .hero-badge { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 100px; font-size: 13px; font-weight: 600; color: var(--white); letter-spacing: 0.05em; margin-bottom: 24px; }
-    .hero-title { font-size: 36px; font-weight: 900; color: var(--white); line-height: 1.3; margin-bottom: 20px; }
-    .hero-desc { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.8; max-width: 560px; margin-bottom: 40px; }
-    .hero-buttons { display: flex; flex-direction: column; gap: 12px; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(0,0,0,0.2) 0%, rgba(0,10,40,0.7) 50%, rgba(0,0,0,0.8) 100%); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 60px 60px; z-index: 1; }
+    .hero-shape { position: absolute; border: 1px solid rgba(255,255,255,0.06); z-index: 1; pointer-events: none; }
+    .hero-shape-1 { width: 300px; height: 300px; top: 10%; right: -50px; transform: rotate(15deg); animation: shapeDrift1 25s infinite ease-in-out; }
+    .hero-shape-2 { width: 200px; height: 200px; bottom: 15%; right: 20%; border-radius: 50%; animation: shapeDrift2 20s infinite ease-in-out; }
+    .hero-shape-3 { width: 150px; height: 150px; top: 30%; left: 5%; transform: rotate(-10deg); animation: shapeDrift3 30s infinite ease-in-out; }
+    @keyframes shapeDrift1 { 0%,100% { transform: rotate(15deg) translate(0,0); } 50% { transform: rotate(20deg) translate(-20px, 30px); } }
+    @keyframes shapeDrift2 { 0%,100% { transform: translate(0,0); opacity: 0.5; } 50% { transform: translate(15px, -25px); opacity: 1; } }
+    @keyframes shapeDrift3 { 0%,100% { transform: rotate(-10deg) translate(0,0); } 50% { transform: rotate(-5deg) translate(10px, 20px); } }
+    @keyframes heroFadeIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-content { position: relative; z-index: 2; padding: 120px 0 80px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 100px; font-size: 13px; font-weight: 600; color: var(--white); letter-spacing: 0.05em; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.2); animation: heroFadeIn 0.8s ease forwards; animation-delay: 0.2s; opacity: 0; }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+    .hero-title { font-family: 'Archivo', 'Inter', 'Noto Sans JP', sans-serif; font-size: 36px; font-weight: 900; color: var(--white); line-height: 1.3; margin-bottom: 20px; text-shadow: 0 2px 40px rgba(0,0,0,0.3); animation: heroFadeIn 0.8s ease forwards; animation-delay: 0.4s; opacity: 0; }
+    .hero-desc { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.8; max-width: 560px; margin-bottom: 40px; animation: heroFadeIn 0.8s ease forwards; animation-delay: 0.6s; opacity: 0; }
+    .hero-buttons { display: flex; flex-direction: column; gap: 12px; animation: heroFadeIn 0.8s ease forwards; animation-delay: 0.8s; opacity: 0; }
 
     @media (min-width: 768px) {
       .hero-title { font-size: 52px; }
@@ -130,8 +160,8 @@
 
     /* === Problems === */
     .problems-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; }
-    .problem-card { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; background: var(--white); border: 1px solid var(--gray-300); border-radius: var(--radius-sm); transition: all 0.3s; }
-    .problem-card:hover { box-shadow: var(--shadow-md); border-color: var(--blue); }
+    .problem-card { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; background: var(--white); border: 1px solid var(--gray-300); border-radius: var(--radius-sm); transition: all 0.3s; border-left: 3px solid transparent; }
+    .problem-card:hover { box-shadow: var(--shadow-md); border-color: var(--blue); border-left-color: #EF4444; transform: translateX(4px); }
     .problem-icon { flex-shrink: 0; width: 40px; height: 40px; background: #FEE2E2; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     .problem-text { font-size: 15px; font-weight: 500; color: var(--gray-700); }
     .problems-closing { margin-top: 48px; text-align: center; }
@@ -143,8 +173,15 @@
 
     /* === Values === */
     .values-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
-    .value-card { background: var(--white); border-radius: var(--radius); padding: 32px 28px; border: 1px solid var(--gray-300); transition: all 0.3s; }
+    .value-card { background: var(--white); border-radius: var(--radius); padding: 32px 28px; border: 1px solid var(--gray-300); transition: all 0.4s; position: relative; overflow: hidden; }
+    .value-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blue), var(--blue-dark)); transform: scaleX(0); transition: transform 0.4s; transform-origin: left; }
+    .value-card:hover::before { transform: scaleX(1); }
     .value-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: var(--blue); }
+    .values-grid .value-card:nth-child(1) { transition-delay: 0s; }
+    .values-grid .value-card:nth-child(2) { transition-delay: 0.05s; }
+    .values-grid .value-card:nth-child(3) { transition-delay: 0.1s; }
+    .values-grid .value-card:nth-child(4) { transition-delay: 0.15s; }
+    .values-grid .value-card:nth-child(5) { transition-delay: 0.2s; }
     .value-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--blue); color: var(--white); border-radius: 50%; font-size: 14px; font-weight: 800; margin-bottom: 16px; }
     .value-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
     .value-sub { font-size: 13px; color: var(--blue); font-weight: 600; margin-bottom: 12px; }
@@ -169,6 +206,15 @@
     .knock-visual-icon { font-size: 64px; margin-bottom: 16px; }
     .knock-visual-text { font-size: 24px; font-weight: 800; color: var(--blue); }
     .knock-visual-sub { font-size: 14px; color: var(--gray-500); margin-top: 8px; }
+    .phone-mockup { width: 220px; height: 420px; background: var(--gray-900); border-radius: 32px; padding: 8px; box-shadow: 0 25px 60px rgba(0,0,0,0.2), inset 0 0 0 2px rgba(255,255,255,0.1); position: relative; }
+    .phone-notch { width: 80px; height: 6px; background: var(--gray-900); border-radius: 0 0 12px 12px; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 2; }
+    .phone-screen { width: 100%; height: 100%; background: var(--white); border-radius: 24px; overflow: hidden; padding: 28px 16px 16px; }
+    .phone-app-bar { font-size: 18px; font-weight: 800; color: var(--blue); margin-bottom: 16px; text-align: center; }
+    .phone-calendar { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+    .phone-day { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--gray-500); background: var(--gray-50); }
+    .phone-day.active { background: var(--blue); color: var(--white); }
+    .phone-card { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--blue-light); border-radius: 10px; margin-bottom: 8px; font-size: 12px; font-weight: 500; color: var(--gray-700); }
+    .phone-card-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
 
     @media (min-width: 768px) {
       .knock-layout { flex-direction: row; align-items: center; }
@@ -178,10 +224,11 @@
     .plans-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
     .plan-card { background: var(--white); border: 2px solid var(--gray-300); border-radius: var(--radius); padding: 32px 28px; position: relative; transition: all 0.3s; }
     .plan-card:hover { box-shadow: var(--shadow-lg); }
-    .plan-card.recommended { border-color: var(--blue); }
+    .plan-card.recommended { border-color: var(--blue); box-shadow: var(--blue-glow); }
+    .plan-card.recommended:hover { box-shadow: 0 0 32px rgba(0,124,255,0.2), var(--shadow-lg); }
     .plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--blue); color: var(--white); padding: 4px 20px; border-radius: 100px; font-size: 12px; font-weight: 700; white-space: nowrap; }
     .plan-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-    .plan-price { font-size: 36px; font-weight: 900; color: var(--blue); margin-bottom: 4px; }
+    .plan-price { font-family: 'Archivo', sans-serif; font-size: 36px; font-weight: 900; color: var(--blue); margin-bottom: 4px; letter-spacing: -0.02em; }
     .plan-price span { font-size: 14px; font-weight: 500; color: var(--gray-500); }
     .plan-desc { font-size: 13px; color: var(--gray-500); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--gray-100); }
     .plan-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
@@ -195,8 +242,8 @@
     /* === Members Preview === */
     .members-scroll { display: flex; gap: 24px; margin-top: 48px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .members-scroll::-webkit-scrollbar { display: none; }
-    .member-preview-card { flex: 0 0 280px; scroll-snap-align: start; background: var(--white); border: 1px solid var(--gray-300); border-radius: var(--radius); overflow: hidden; transition: all 0.3s; }
-    .member-preview-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .member-preview-card { flex: 0 0 280px; scroll-snap-align: start; background: var(--white); border: none; border-radius: var(--radius); overflow: hidden; transition: all 0.3s; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .member-preview-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.12); transform: translateY(-4px); }
     .member-preview-img { width: 100%; height: 200px; object-fit: cover; background: var(--gray-100); }
     .member-preview-body { padding: 20px; }
     .member-preview-company { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
@@ -205,23 +252,30 @@
 
     /* === For Clients === */
     .clients-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
-    .client-card { padding: 28px; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius); background: rgba(255,255,255,0.05); }
-    .client-card-icon { font-size: 32px; margin-bottom: 12px; }
+    .client-card { padding: 28px; border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); transition: all 0.4s; }
+    .client-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(0,124,255,0.3); transform: translateY(-4px); }
+    .client-card-icon { width: 48px; height: 48px; background: rgba(0,124,255,0.1); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 32px; }
     .client-card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
     .client-card-desc { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; }
     .client-trades { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 48px; }
-    .client-trade { padding: 8px 20px; border: 1px solid rgba(255,255,255,0.3); border-radius: 100px; font-size: 14px; color: rgba(255,255,255,0.85); }
+    .client-trade { padding: 8px 20px; border: 1px solid rgba(255,255,255,0.3); border-radius: 100px; font-size: 14px; color: rgba(255,255,255,0.85); transition: all 0.3s; cursor: default; }
+    .client-trade:hover { border-color: var(--blue); color: var(--white); background: rgba(0,124,255,0.15); }
+
+    .client-flow-grid { grid-template-columns: 1fr !important; }
 
     @media (min-width: 768px) {
       .clients-grid { grid-template-columns: 1fr 1fr; }
+      .client-flow-grid { grid-template-columns: repeat(3, 1fr) !important; }
     }
 
     /* === Community === */
     .community-layout { display: flex; flex-direction: column; gap: 48px; margin-top: 48px; }
     .community-text { flex: 1; }
     .community-text p { font-size: 15px; color: var(--gray-700); line-height: 1.8; margin-bottom: 16px; }
-    .community-highlight { font-size: 20px; font-weight: 800; color: var(--blue); margin-top: 24px; }
-    .community-img { flex: 1; border-radius: var(--radius); overflow: hidden; background: var(--gray-100); min-height: 240px; }
+    .community-highlight { font-size: 20px; font-weight: 800; color: var(--blue); margin-top: 24px; position: relative; padding-left: 20px; }
+    .community-highlight::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 4px; background: var(--blue); border-radius: 2px; }
+    .community-img { flex: 1; border-radius: var(--radius); overflow: hidden; background: var(--gray-100); min-height: 240px; position: relative; }
+    .community-img::before { content: ''; position: absolute; top: -8px; left: -8px; right: 8px; bottom: 8px; border: 2px solid var(--blue); border-radius: var(--radius); z-index: -1; opacity: 0.3; }
     .community-img img { width: 100%; height: 100%; object-fit: cover; }
 
     @media (min-width: 768px) {
@@ -229,7 +283,8 @@
     }
 
     /* === Final CTA === */
-    .final-cta { background: var(--blue); color: var(--white); padding: 80px 0; text-align: center; }
+    .final-cta { background: var(--blue); color: var(--white); padding: 80px 0; text-align: center; position: relative; overflow: hidden; }
+    .final-cta::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 41px); pointer-events: none; }
     .final-cta-title { font-size: 28px; font-weight: 800; margin-bottom: 16px; line-height: 1.4; }
     .final-cta-desc { font-size: 16px; opacity: 0.9; margin-bottom: 40px; }
     .final-cta-buttons { display: flex; flex-direction: column; gap: 12px; justify-content: center; align-items: center; }
@@ -257,7 +312,7 @@
     }
 
     /* === Scroll Animation === */
-    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
@@ -299,7 +354,7 @@
     <div class="nav-links">
       <a href="service.html" class="nav-link">サービス</a>
       <a href="plan.html" class="nav-link">料金プラン</a>
-      <a href="members.html" class="nav-link">メンバー紹介</a>
+      <a href="members-showcase.html" class="nav-link">メンバー紹介</a>
       <a href="company.html" class="nav-link">会社概要</a>
     </div>
     <div class="nav-cta">
@@ -334,7 +389,7 @@
   <div class="mobile-menu-links">
     <a href="service.html" class="mobile-menu-link">サービス</a>
     <a href="plan.html" class="mobile-menu-link">料金プラン</a>
-    <a href="members.html" class="mobile-menu-link">メンバー紹介</a>
+    <a href="members-showcase.html" class="mobile-menu-link">メンバー紹介</a>
     <a href="company.html" class="mobile-menu-link">会社概要</a>
     <a href="contact.html" class="mobile-menu-link">お問い合わせ</a>
     <a href="faq.html" class="mobile-menu-link">よくある質問</a>
@@ -349,103 +404,177 @@
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-shape hero-shape-1"></div>
+  <div class="hero-shape hero-shape-2"></div>
+  <div class="hero-shape hero-shape-3"></div>
   <div class="hero-content container">
-    <div class="hero-badge">CRAFTSMAN PLATFORM</div>
-    <h1 class="hero-title">職人が誇りを持って<br>働ける社会を作る</h1>
-    <p class="hero-desc">Builders Baseは、建設業界の職人が安心して働き続けられる環境を作るためのプラットフォームです。案件紹介から資金繰り支援、HP制作まで、職人の経営を総合的にサポートします。</p>
+    <div class="hero-badge">完全紹介制プラットフォーム</div>
+    <h1 class="hero-title">仕事がもらえる。<br>仲間ができる。<br>現場に集中できる。</h1>
+    <p class="hero-desc">Builders Baseは、一人親方・小規模建設事業者のための事業基盤です。元請機能・案件紹介・資金繰り支援・HP制作・コミュニティまで、職人の「経営」を総合的にサポートします。</p>
     <div class="hero-buttons">
-      <a href="plan.html" class="btn btn-white btn-lg">職人の方はこちら</a>
+      <a href="plan.html" class="btn btn-white btn-lg">プランを見る</a>
       <a href="contact.html" class="btn btn-outline-white btn-lg">工事を依頼したい方</a>
     </div>
   </div>
 </section>
 
-<!-- Problems -->
-<section class="section section-light" id="problems">
+<!-- 実績数字 -->
+<section class="section" id="numbers" style="padding:60px 0;">
   <div class="container">
-    <div class="section-center fade-up">
-      <div class="section-label">Problems</div>
-      <h2 class="section-title">建設業界の職人が抱える課題</h2>
-      <p class="section-subtitle">独立した職人・中小事業者が日々直面する、構造的な課題の数々。Builders Baseはこれらの課題を解決するために生まれました。</p>
-    </div>
-    <div class="problems-grid fade-up">
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">仕事が安定しない。閑散期に収入が途絶える</p>
+    <div class="fade-up" style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;">
+      <div>
+        <div style="font-family:'Archivo',sans-serif;font-size:48px;font-weight:900;color:var(--blue);line-height:1.2;">XX<span style="font-size:24px;font-weight:700;">名+</span></div>
+        <div style="font-size:14px;color:var(--gray-500);margin-top:4px;">登録メンバー数</div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">当月の材料費が重く、資金繰りが厳しい</p>
+      <div>
+        <div style="font-family:'Archivo',sans-serif;font-size:48px;font-weight:900;color:var(--blue);line-height:1.2;">XX<span style="font-size:24px;font-weight:700;">業種</span></div>
+        <div style="font-size:14px;color:var(--gray-500);margin-top:4px;">対応可能な業種</div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">元請けとの関係性が不安定で、立場が弱い</p>
+      <div>
+        <div style="font-family:'Archivo',sans-serif;font-size:48px;font-weight:900;color:var(--blue);line-height:1.2;">X<span style="font-size:24px;font-weight:700;">億円+</span></div>
+        <div style="font-size:14px;color:var(--gray-500);margin-top:4px;">年間受注額</div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">横のつながりが少なく、情報が入ってこない</p>
+      <div>
+        <div style="font-family:'Archivo',sans-serif;font-size:48px;font-weight:900;color:var(--blue);line-height:1.2;">XXX<span style="font-size:24px;font-weight:700;">件+</span></div>
+        <div style="font-size:14px;color:var(--gray-500);margin-top:4px;">施工実績</div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">経理・契約・見積もりなどの事務作業が苦手</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">トラブル発生時に相談できる先がない</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">材料費や工具のコストを下げたいが方法がない</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">!</div>
-        <p class="problem-text">事業を広げたいのに集客や発信の仕方がわからない</p>
-      </div>
-    </div>
-    <div class="problems-closing fade-up">
-      <p>Builders Baseは、これらすべての課題に向き合います。</p>
     </div>
   </div>
 </section>
 
-<!-- 5 Values -->
-<section class="section" id="values">
+<!-- 3つの壁 -->
+<section class="section section-light" id="problems">
   <div class="container">
     <div class="section-center fade-up">
-      <div class="section-label">Our Values</div>
-      <h2 class="section-title">5つの価値で職人をサポート</h2>
-      <p class="section-subtitle">Builders Baseは、職人の「仕事」「お金」「つながり」「発信」「安心」を支える5つのサービスを提供します。</p>
+      <div class="section-label">Problems</div>
+      <h2 class="section-title">技術が一流でも越えられない、<br>個人事業主の「3つの壁」</h2>
+      <p class="section-subtitle">腕が良いだけでは解決できない、構造的な課題。Builders Baseはこれらの壁を仕組みで突破します。</p>
+    </div>
+    <div class="problems-grid fade-up" style="grid-template-columns:1fr;">
+      <div class="problem-card" style="border-left-color:#EF4444;">
+        <div class="problem-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <p class="problem-text" style="font-size:18px;font-weight:700;margin-bottom:4px;">仕事の壁</p>
+          <p style="font-size:14px;color:var(--gray-500);line-height:1.7;">建設業許可がないため、請負金額に上限（500万円未満）があり、大きな現場に入れない。仕事が安定せず、閑散期に収入が途絶える。</p>
+        </div>
+      </div>
+      <div class="problem-card" style="border-left-color:#EF4444;">
+        <div class="problem-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <p class="problem-text" style="font-size:18px;font-weight:700;margin-bottom:4px;">信用の壁</p>
+          <p style="font-size:14px;color:var(--gray-500);line-height:1.7;">HPやオフィスがなく、新規顧客に不安がられる。大手企業と直接取引ができない。ローンやリースが組みにくい。</p>
+        </div>
+      </div>
+      <div class="problem-card" style="border-left-color:#EF4444;">
+        <div class="problem-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <p class="problem-text" style="font-size:18px;font-weight:700;margin-bottom:4px;">孤立の壁</p>
+          <p style="font-size:14px;color:var(--gray-500);line-height:1.7;">トラブル時に守ってくれる組織がない。横のつながりが少なく、情報が入ってこない。誰に相談すればいいか分からない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="problems-closing fade-up">
+      <p>Builders Baseは、これら3つの壁を<strong>仕組み</strong>で突破します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 元請機能 -->
+<section class="section" id="motouké">
+  <div class="container">
+    <div class="section-center fade-up">
+      <div class="section-label">Core Value</div>
+      <h2 class="section-title">最大の価値：元請機能の提供</h2>
+      <p class="section-subtitle">建設業許可がなくても、500万円以上の工事を請け負える。手数料はたった3%。</p>
+    </div>
+    <div class="fade-up" style="max-width:720px;margin:48px auto 0;">
+      <div style="display:flex;flex-direction:column;gap:0;align-items:center;">
+        <div style="background:var(--blue-light);border:2px solid var(--blue);border-radius:var(--radius);padding:20px 32px;text-align:center;width:100%;max-width:400px;">
+          <div style="font-size:13px;color:var(--blue);font-weight:600;margin-bottom:4px;">STEP 1</div>
+          <div style="font-size:18px;font-weight:700;">発注者（クライアント）</div>
+          <div style="font-size:13px;color:var(--gray-500);">工事を依頼</div>
+        </div>
+        <div style="font-size:24px;color:var(--blue);padding:8px 0;">&#8595;</div>
+        <div style="background:var(--blue);color:var(--white);border-radius:var(--radius);padding:20px 32px;text-align:center;width:100%;max-width:400px;">
+          <div style="font-size:13px;opacity:0.8;font-weight:600;margin-bottom:4px;">STEP 2</div>
+          <div style="font-size:18px;font-weight:700;">株式会社ディオ（Builders Base）</div>
+          <div style="font-size:13px;opacity:0.8;">元請として受注・契約・管理</div>
+        </div>
+        <div style="font-size:24px;color:var(--blue);padding:8px 0;">&#8595;</div>
+        <div style="background:var(--blue-light);border:2px solid var(--blue);border-radius:var(--radius);padding:20px 32px;text-align:center;width:100%;max-width:400px;">
+          <div style="font-size:13px;color:var(--blue);font-weight:600;margin-bottom:4px;">STEP 3</div>
+          <div style="font-size:18px;font-weight:700;">スタンダード会員（あなた）</div>
+          <div style="font-size:13px;color:var(--gray-500);">施工パートナーとして参画</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;">
+        <div style="background:var(--gray-50);border-radius:var(--radius-sm);padding:24px;text-align:center;">
+          <div style="font-size:13px;color:var(--gray-500);margin-bottom:4px;">一般的な中抜き</div>
+          <div style="font-size:32px;font-weight:900;color:#EF4444;font-family:'Archivo',sans-serif;">10〜20%</div>
+          <div style="font-size:12px;color:var(--gray-500);">不透明なマージン</div>
+        </div>
+        <div style="background:var(--blue-light);border:2px solid var(--blue);border-radius:var(--radius-sm);padding:24px;text-align:center;">
+          <div style="font-size:13px;color:var(--blue);margin-bottom:4px;">Builders Base</div>
+          <div style="font-size:32px;font-weight:900;color:var(--blue);font-family:'Archivo',sans-serif;">3%</div>
+          <div style="font-size:12px;color:var(--blue);">一律・明朗会計</div>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:24px;font-size:14px;color:var(--gray-500);line-height:1.8;">3%には、元請名義・信用の提供、契約・請求・入金管理の代行、トラブル時の一次対応、許可・契約面のリスク吸収が含まれます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- サービス一覧 -->
+<section class="section section-light" id="values">
+  <div class="container">
+    <div class="section-center fade-up">
+      <div class="section-label">Services</div>
+      <h2 class="section-title">Builders Baseが提供するサービス</h2>
+      <p class="section-subtitle">職人の「仕事」「お金」「信用」「つながり」「安心」を支える総合サポートです。</p>
     </div>
     <div class="values-grid">
       <div class="value-card fade-up">
         <div class="value-num">1</div>
-        <h3 class="value-title">仕事の安定化</h3>
-        <div class="value-sub">案件紹介</div>
-        <p class="value-desc">大手企業からの工事依頼が集まり、メンバーに案件が流れる仕組み。Knockアプリで稼働日を登録するだけで、条件に合った仕事が届きます。</p>
+        <h3 class="value-title">案件紹介</h3>
+        <div class="value-sub">仕事の安定化</div>
+        <p class="value-desc">ディオに入る工事案件をメンバーに紹介。多種多様な業種のメンバーが揃っているため、メンバー同士での仕事紹介も活発です。</p>
       </div>
       <div class="value-card fade-up">
         <div class="value-num">2</div>
-        <h3 class="value-title">資金繰り支援</h3>
-        <div class="value-sub">材料費立替</div>
-        <p class="value-desc">現場で必要な材料費をBuilders Baseが立て替え。月末の資金繰りに困ることなく、安心して現場に集中できます。</p>
+        <h3 class="value-title">材料費立替・共同仕入れ</h3>
+        <div class="value-sub">資金繰り支援 & コスト削減</div>
+        <p class="value-desc">材料費の立替えで資金繰りの心配を解消。さらに、独自ルートでの共同仕入れにより、個人では実現できないコスト削減が可能です。</p>
       </div>
       <div class="value-card fade-up">
         <div class="value-num">3</div>
-        <h3 class="value-title">コスト削減</h3>
-        <div class="value-sub">独自仕入れルート</div>
-        <p class="value-desc">ディオ名義での一括仕入れにより、材料費・工具代を大幅に削減。個人では実現できないスケールメリットを享受できます。</p>
+        <h3 class="value-title">無料HP制作</h3>
+        <div class="value-sub">信用の見える化</div>
+        <p class="value-desc">自社HPがない職人向けに、施工内容・連絡先・事業概要をまとめたページを無料で制作。「HPがない」ことによる機会損失を防ぎます。</p>
       </div>
       <div class="value-card fade-up">
         <div class="value-num">4</div>
-        <h3 class="value-title">職人コミュニティ</h3>
-        <div class="value-sub">横のつながり</div>
-        <p class="value-desc">月例のBB会（交流会）で情報交換・案件共有。同業の仲間との「つながり」が、新しい仕事やスキルアップにつながります。</p>
+        <h3 class="value-title">シェアオフィス</h3>
+        <div class="value-sub">池袋・会議室利用</div>
+        <p class="value-desc">池袋のシェアオフィスを商談・打ち合わせに利用可能。顧客を招ける場所があることで、成約率と信頼感が向上します。</p>
       </div>
       <div class="value-card fade-up">
         <div class="value-num">5</div>
-        <h3 class="value-title">トラブル・経営サポート</h3>
-        <div class="value-sub">弁護士・税理士紹介</div>
-        <p class="value-desc">未払い・契約トラブル・事故対応・税務相談など、専門家を紹介しサポート。ひとりで悩まず相談できる環境があります。</p>
+        <h3 class="value-title">職人コミュニティ</h3>
+        <div class="value-sub">多業種ネットワーク</div>
+        <p class="value-desc">BB会（交流会）やゴルフコンペ、忘年会・新年会などのイベントで横のつながりを構築。異業種の職人との出会いが、新しい仕事やビジネスチャンスに繋がります。</p>
+      </div>
+      <div class="value-card fade-up">
+        <div class="value-num">6</div>
+        <h3 class="value-title">専門家紹介</h3>
+        <div class="value-sub">弁護士・税理士</div>
+        <p class="value-desc">未払い・契約トラブル・事故対応・税務相談など、信頼できる専門家を紹介。「相談先がある」という安心感が事業継続の支えになります。</p>
       </div>
     </div>
     <div style="text-align:center;margin-top:48px;" class="fade-up">
@@ -454,42 +583,40 @@
   </div>
 </section>
 
-<!-- Knock App -->
-<section class="section section-light knock-section" id="knock">
+<!-- メンバー同士の連携 -->
+<section class="section section-light" id="network">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">Technology</div>
-      <h2 class="section-title">Knockアプリで案件をスマホ管理</h2>
-      <p class="section-subtitle">建設業専門の案件マッチングアプリ。稼働可能日を登録するだけで、条件に合った案件が届きます。</p>
+      <div class="section-label">Network</div>
+      <h2 class="section-title">メンバー同士の直接連携</h2>
+      <p class="section-subtitle">Builders Baseの全メンバーは公式サイトの一覧から業種・エリア・スキルを確認できます。「塗装が足りない」「電気工事ができる人が欲しい」——そんな時、メンバー同士で直接連絡を取り合い、手数料なしで仕事を依頼できます。</p>
     </div>
     <div class="knock-layout fade-up">
       <div class="knock-content">
         <div class="knock-steps">
           <div class="knock-step">
             <div class="knock-step-num">1</div>
-            <div class="knock-step-text">稼働可能日をカレンダーに登録</div>
+            <div class="knock-step-text">メンバー一覧から業種・エリアで検索</div>
           </div>
           <div class="knock-step">
             <div class="knock-step-num">2</div>
-            <div class="knock-step-text">案件詳細を確認し、受注・辞退を選択</div>
+            <div class="knock-step-text">気になる職人に直接コンタクト</div>
           </div>
           <div class="knock-step">
             <div class="knock-step-num">3</div>
-            <div class="knock-step-text">情報ルームで元請けと連絡</div>
-          </div>
-          <div class="knock-step">
-            <div class="knock-step-num">4</div>
-            <div class="knock-step-text">完了報告を送信して案件終了</div>
+            <div class="knock-step-text">手数料なしで仕事を依頼・受注</div>
           </div>
         </div>
         <div style="margin-top:32px;">
-          <a href="knock-guide.html" class="btn btn-secondary">Knockについて詳しく</a>
+          <a href="members-showcase.html" class="btn btn-secondary">メンバー一覧を見る</a>
         </div>
       </div>
       <div class="knock-visual">
-        <div class="knock-visual-icon">&#128241;</div>
-        <div class="knock-visual-text">Knock</div>
-        <div class="knock-visual-sub">建設業専門マッチングアプリ</div>
+        <div style="text-align:center;">
+          <div style="font-size:64px;margin-bottom:16px;">&#129309;</div>
+          <div style="font-size:24px;font-weight:800;color:var(--blue);">手数料 0%</div>
+          <div style="font-size:14px;color:var(--gray-500);margin-top:8px;">メンバー間の直接取引に<br>手数料は一切かかりません</div>
+        </div>
       </div>
     </div>
   </div>
@@ -500,53 +627,39 @@
   <div class="container">
     <div class="section-center fade-up">
       <div class="section-label">Plans</div>
-      <h2 class="section-title">あなたに合ったプランを</h2>
-      <p class="section-subtitle">入会金0円。目的やスタイルに合わせて3つのプランからお選びいただけます。</p>
+      <h2 class="section-title">2つのプラン</h2>
+      <p class="section-subtitle">入会金0円。あなたの目的に合わせてお選びいただけます。</p>
     </div>
-    <div class="plans-grid fade-up">
-      <!-- 協力会 -->
+    <div class="plans-grid fade-up" style="grid-template-columns:1fr 1fr;max-width:800px;margin-left:auto;margin-right:auto;">
+      <!-- 協力会員 -->
       <div class="plan-card">
-        <div class="plan-name">協力会</div>
+        <div class="plan-name">協力会員</div>
         <div class="plan-price">&yen;10,000<span>/月</span></div>
-        <p class="plan-desc">まずは案件を受けたい方に。Knockアプリで現場案件を受注できます。</p>
+        <p class="plan-desc">まず仲間と繋がりたい方、案件紹介を受けたい方に。</p>
         <div class="plan-features">
-          <div class="plan-feature">Knockアプリで案件受注</div>
-          <div class="plan-feature">BB会（交流会）参加</div>
-          <div class="plan-feature">基本サポート</div>
+          <div class="plan-feature">案件紹介</div>
+          <div class="plan-feature">メンバー一覧への掲載</div>
+          <div class="plan-feature">メンバー同士の仕事紹介</div>
+          <div class="plan-feature">BB会・イベント参加</div>
         </div>
         <a href="plan.html" class="btn btn-secondary" style="width:100%;text-align:center;">詳細を見る</a>
       </div>
-      <!-- メンバー -->
+      <!-- スタンダード -->
       <div class="plan-card recommended">
         <div class="plan-badge">おすすめ</div>
-        <div class="plan-name">メンバー</div>
+        <div class="plan-name">スタンダード</div>
         <div class="plan-price">&yen;30,000<span>/月</span></div>
-        <p class="plan-desc">全サービスをフル活用。仕事紹介・材料費立替・HP制作まで。</p>
+        <p class="plan-desc">事業を拡大したい方に。全サービスをフル活用。</p>
         <div class="plan-features">
-          <div class="plan-feature">案件紹介（手数料0円）</div>
+          <div class="plan-feature">協力会員のすべての機能</div>
+          <div class="plan-feature">元請機能（手数料3%）</div>
+          <div class="plan-feature">無料HP制作</div>
+          <div class="plan-feature">シェアオフィス利用</div>
           <div class="plan-feature">材料費立替</div>
-          <div class="plan-feature">HP制作サービス</div>
-          <div class="plan-feature">メンバー一覧掲載</div>
-          <div class="plan-feature">コスト削減（独自仕入れ）</div>
-          <div class="plan-feature">BB会参加</div>
-          <div class="plan-feature">トラブルサポート</div>
+          <div class="plan-feature">資材の共同購入</div>
+          <div class="plan-feature">士業紹介（弁護士・税理士）</div>
         </div>
         <a href="plan.html" class="btn btn-primary" style="width:100%;text-align:center;">詳細を見る</a>
-      </div>
-      <!-- プレミアム -->
-      <div class="plan-card">
-        <div class="plan-name">プレミアム</div>
-        <div class="plan-price">&yen;50,000<span>/月</span></div>
-        <p class="plan-desc">最優先の案件紹介とマージン0%。事業拡大を目指す方に。</p>
-        <div class="plan-features">
-          <div class="plan-feature">メンバーの全機能</div>
-          <div class="plan-feature">マージン0%の案件実行</div>
-          <div class="plan-feature">最優先で案件紹介</div>
-          <div class="plan-feature">プレミアムHP制作</div>
-          <div class="plan-feature">メンバー一覧で特別表示</div>
-          <div class="plan-feature">経営アドバイザリー</div>
-        </div>
-        <a href="plan.html" class="btn btn-secondary" style="width:100%;text-align:center;">詳細を見る</a>
       </div>
     </div>
   </div>
@@ -564,7 +677,7 @@
       <!-- Firestore から動的に読み込み -->
     </div>
     <div style="text-align:center;margin-top:32px;" class="fade-up">
-      <a href="members.html" class="btn btn-primary">メンバー一覧を見る</a>
+      <a href="members-showcase.html" class="btn btn-primary">メンバー一覧を見る</a>
     </div>
   </div>
 </section>
@@ -572,33 +685,71 @@
 <!-- For Clients -->
 <section class="section section-dark" id="clients">
   <div class="container">
+    <!-- メインメッセージ -->
     <div class="section-center fade-up">
       <div class="section-label" style="color:rgba(255,255,255,0.6);">For Clients</div>
       <h2 class="section-title">工事を依頼したい企業様へ</h2>
-      <p class="section-subtitle" style="color:rgba(255,255,255,0.7);">Builders Baseに所属する厳選された職人ネットワークで、幅広い工事に対応します。</p>
+      <p class="section-subtitle" style="color:rgba(255,255,255,0.7);">完全紹介制のクローズドネットワーク。身元が確認された信頼できる職人のみが在籍しています。大手企業からの工事案件を年間XX億円規模で受注・管理している実績があります。</p>
     </div>
+
+    <!-- BBに依頼する4つのメリット -->
     <div class="clients-grid fade-up">
       <div class="client-card">
-        <div class="client-card-icon">&#128736;</div>
-        <h3 class="client-card-title">厳選された職人ネットワーク</h3>
-        <p class="client-card-desc">審査を通過した信頼できる職人のみが所属。品質と施工力を保証します。</p>
+        <div class="client-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h3 class="client-card-title">クローズドネットワーク</h3>
+        <p class="client-card-desc">完全紹介制で身元確認済みの職人のみが在籍。不特定業者への外注ではなく、信頼できるメンバーが施工を担当します。</p>
       </div>
       <div class="client-card">
-        <div class="client-card-icon">&#128200;</div>
+        <div class="client-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
         <h3 class="client-card-title">幅広い業種に対応</h3>
-        <p class="client-card-desc">内装・塗装・設備・電気・解体・防水など、建設に関わる多彩な業種をカバー。</p>
+        <p class="client-card-desc">内装・塗装・設備・電気・解体・防水など、建設に関わる多彩な業種をカバー。XX業種のメンバーが在籍。</p>
       </div>
       <div class="client-card">
-        <div class="client-card-icon">&#9989;</div>
+        <div class="client-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
         <h3 class="client-card-title">ワンストップ対応</h3>
-        <p class="client-card-desc">複数業種が必要な現場も、Builders Baseに依頼すればまとめて手配可能。</p>
+        <p class="client-card-desc">複数業種が必要な現場も、Builders Baseに依頼すればまとめて手配可能。窓口は一つで現場管理もお任せください。</p>
       </div>
       <div class="client-card">
-        <div class="client-card-icon">&#128222;</div>
-        <h3 class="client-card-title">迅速なレスポンス</h3>
-        <p class="client-card-desc">急な人手不足にも対応。Knockアプリで稼働可能な職人を即座にマッチング。</p>
+        <div class="client-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="client-card-title">実績と信頼</h3>
+        <p class="client-card-desc">大手企業からの受注実績あり。年間XX億円規模の工事を管理。元請として契約・品質管理まで一貫対応します。</p>
       </div>
     </div>
+
+    <!-- 発注フロー -->
+    <div class="fade-up" style="margin-top:64px;">
+      <div style="text-align:center;margin-bottom:40px;">
+        <div style="font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Flow</div>
+        <h3 style="font-size:24px;font-weight:800;color:var(--white);">ご発注の流れ</h3>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto;" class="client-flow-grid">
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:32px 24px;text-align:center;">
+          <div style="font-family:'Archivo',sans-serif;font-size:36px;font-weight:900;color:var(--blue);margin-bottom:12px;">01</div>
+          <h4 style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;">お問い合わせ</h4>
+          <p style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.7;">工事内容・時期・規模をご連絡ください。お電話・メール・フォームから承ります。</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:32px 24px;text-align:center;">
+          <div style="font-family:'Archivo',sans-serif;font-size:36px;font-weight:900;color:var(--blue);margin-bottom:12px;">02</div>
+          <h4 style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;">最適な職人を手配</h4>
+          <p style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.7;">業種・エリア・スキルに合ったメンバーをマッチング。複数業種も一括で手配します。</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:32px 24px;text-align:center;">
+          <div style="font-family:'Archivo',sans-serif;font-size:36px;font-weight:900;color:var(--blue);margin-bottom:12px;">03</div>
+          <h4 style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;">施工・完了</h4>
+          <p style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.7;">ディオが元請として品質管理・契約管理を行い、安心の施工をお届けします。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 業種タグ -->
     <div class="client-trades fade-up">
       <span class="client-trade">リフォーム</span>
       <span class="client-trade">内装工事</span>
@@ -611,8 +762,17 @@
       <span class="client-trade">足場工事</span>
       <span class="client-trade">重機</span>
     </div>
+
+    <!-- CTA -->
     <div style="text-align:center;margin-top:48px;" class="fade-up">
-      <a href="contact.html" class="btn btn-white btn-lg">お問い合わせ</a>
+      <p style="font-size:18px;font-weight:700;color:var(--white);margin-bottom:24px;">まずはお気軽にご相談ください</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="contact.html" class="btn btn-white btn-lg">工事のご依頼・ご相談</a>
+      </div>
+      <div style="margin-top:24px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:14px;color:rgba(255,255,255,0.6);">
+        <span>Tel: <a href="tel:03-6384-7984" style="color:var(--white);">03-6384-7984</a></span>
+        <span>Mail: <a href="mailto:info@diokk.co.jp" style="color:var(--white);">info@diokk.co.jp</a></span>
+      </div>
     </div>
   </div>
 </section>
@@ -623,10 +783,10 @@
     <div class="community-layout fade-up">
       <div class="community-text">
         <div class="section-label">Community</div>
-        <h2 class="section-title">BB会 - 月例コミュニティ</h2>
-        <p>毎月開催される交流会「BB会」。メンバー同士の案件共有・情報交換・施工の悩み相談が行われます。紹介で仕事が回る仕組みが自然と生まれ、孤独になりがちな職人の「横のつながり」を作ります。</p>
-        <p>同業だけでなく異業種の職人とも交流でき、新しい視点やビジネスチャンスが広がります。</p>
-        <p class="community-highlight">「孤独な職人をひとりにさせない」</p>
+        <h2 class="section-title">建設業の多業種が集まるコミュニティ</h2>
+        <p>BB会（交流会）やゴルフコンペ、忘年会・新年会など、メンバー同士が自然とつながる場を用意しています。案件共有・情報交換・施工の悩み相談が日常的に行われ、紹介で仕事が回る仕組みが生まれています。</p>
+        <p>内装・塗装・設備・電気・解体・防水など、建設業の多種多様な業種が一堂に会する場。同業だけでなく異業種の職人との出会いが、新しいビジネスチャンスに繋がります。</p>
+        <p class="community-highlight">「ひとりの職人を、ひとりにさせない」</p>
       </div>
       <div class="community-img">
         <img src="assets/images/hero-cover.jpg" alt="BB会の様子" loading="lazy" width="600" height="400">
@@ -638,11 +798,11 @@
 <!-- Final CTA -->
 <section class="final-cta">
   <div class="container fade-up">
-    <h2 class="final-cta-title">Builders Baseで<br>職人としての新しい一歩を</h2>
-    <p class="final-cta-desc">入会金無料。まずはお気軽にお問い合わせください。</p>
+    <h2 class="final-cta-title">Builders Baseで<br>新しい一歩を</h2>
+    <p class="final-cta-desc">職人の入会も、工事のご依頼も、まずはお気軽にお問い合わせください。</p>
     <div class="final-cta-buttons">
       <a href="registration.html" class="btn btn-white btn-lg">入会について詳しく見る</a>
-      <a href="contact.html" class="btn btn-outline-white btn-lg">お問い合わせ</a>
+      <a href="contact.html" class="btn btn-outline-white btn-lg">工事のご依頼・ご相談</a>
     </div>
     <div class="final-cta-contact">
       <span>Tel: <a href="tel:03-6384-7984">03-6384-7984</a></span>
@@ -665,7 +825,7 @@
         <div class="footer-links" style="margin-top:20px;">
           <a href="service.html" class="footer-link">サービス</a>
           <a href="plan.html" class="footer-link">料金プラン</a>
-          <a href="members.html" class="footer-link">メンバー紹介</a>
+          <a href="members-showcase.html" class="footer-link">メンバー紹介</a>
           <a href="company.html" class="footer-link">会社概要</a>
           <a href="contact.html" class="footer-link">お問い合わせ</a>
           <a href="faq.html" class="footer-link">よくある質問</a>

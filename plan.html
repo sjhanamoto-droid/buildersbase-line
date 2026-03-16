@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>料金プラン｜Builders Base</title>
-  <meta name="description" content="Builders Baseの料金プラン。協力会・メンバー・プレミアムの3つのプランから、あなたに合ったプランをお選びください。入会金0円。">
+  <meta name="description" content="Builders Baseの料金プラン。協力会員・スタンダード会員の2つのプランから、あなたに合ったプランをお選びください。入会金0円。">
   <meta property="og:title" content="料金プラン｜Builders Base">
-  <meta property="og:description" content="Builders Baseの料金プラン比較。職人の目的やスタイルに合わせて3つのプランをご用意しています。">
+  <meta property="og:description" content="Builders Baseの料金プラン比較。職人の目的やスタイルに合わせて2つのプランをご用意しています。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://builders-base.com/plan.html">
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
@@ -135,7 +135,7 @@
     .plan-feature::before { content: ''; flex-shrink: 0; width: 20px; height: 20px; background: var(--blue-light); border-radius: 50%; margin-top: 2px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23007CFF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; }
 
     @media (min-width: 768px) {
-      .plans-grid { grid-template-columns: repeat(3, 1fr); }
+      .plans-grid { grid-template-columns: repeat(2, 1fr); max-width: 800px; margin-left: auto; margin-right: auto; margin-top: 48px; }
     }
 
     /* === Comparison Table === */
@@ -167,7 +167,7 @@
     .recommend-card-list li::before { content: ''; flex-shrink: 0; width: 6px; height: 6px; background: var(--blue); border-radius: 50%; margin-top: 8px; }
 
     @media (min-width: 768px) {
-      .recommend-grid { grid-template-columns: repeat(3, 1fr); }
+      .recommend-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* === Zero Callout === */
@@ -248,7 +248,7 @@
     <div class="nav-links">
       <a href="service.html" class="nav-link">サービス</a>
       <a href="plan.html" class="nav-link">料金プラン</a>
-      <a href="members.html" class="nav-link">メンバー紹介</a>
+      <a href="members-showcase.html" class="nav-link">メンバー紹介</a>
       <a href="company.html" class="nav-link">会社概要</a>
     </div>
     <div class="nav-cta">
@@ -283,7 +283,7 @@
   <div class="mobile-menu-links">
     <a href="service.html" class="mobile-menu-link">サービス</a>
     <a href="plan.html" class="mobile-menu-link">料金プラン</a>
-    <a href="members.html" class="mobile-menu-link">メンバー紹介</a>
+    <a href="members-showcase.html" class="mobile-menu-link">メンバー紹介</a>
     <a href="company.html" class="mobile-menu-link">会社概要</a>
     <a href="contact.html" class="mobile-menu-link">お問い合わせ</a>
     <a href="faq.html" class="mobile-menu-link">よくある質問</a>
@@ -308,54 +308,39 @@
   <div class="container">
     <div class="section-center fade-up">
       <div class="section-label">Choose Your Plan</div>
-      <h2 class="section-title">3つのプランをご用意</h2>
+      <h2 class="section-title">2つのプランをご用意</h2>
       <p class="section-subtitle">入会金0円。目的やスタイルに合わせて、あなたに最適なプランをお選びいただけます。</p>
     </div>
     <div class="plans-grid fade-up">
-      <!-- 協力会 -->
+      <!-- 協力会員 -->
       <div class="plan-card">
-        <div class="plan-name">協力会</div>
+        <div class="plan-name">協力会員</div>
         <div class="plan-price">&yen;10,000<span>/月</span></div>
-        <p class="plan-desc">まずは案件を受けたい方に。Knockアプリで案件を受注できます。</p>
+        <p class="plan-desc">まず仲間と繋がりたい方、案件紹介を受けたい方に。</p>
         <div class="plan-features">
-          <div class="plan-feature">Knockアプリで案件受注</div>
-          <div class="plan-feature">BB会（交流会）参加</div>
-          <div class="plan-feature">基本トラブルサポート</div>
+          <div class="plan-feature">案件紹介</div>
+          <div class="plan-feature">メンバー一覧への掲載</div>
+          <div class="plan-feature">メンバー同士の仕事紹介</div>
+          <div class="plan-feature">BB会・イベント参加</div>
         </div>
         <a href="registration.html" class="btn btn-secondary" style="width:100%;text-align:center;">このプランで入会</a>
       </div>
-      <!-- メンバー -->
+      <!-- スタンダード -->
       <div class="plan-card recommended">
         <div class="plan-badge">おすすめ</div>
-        <div class="plan-name">メンバー</div>
+        <div class="plan-name">スタンダード</div>
         <div class="plan-price">&yen;30,000<span>/月</span></div>
-        <p class="plan-desc">全サービスをフル活用。仕事紹介・材料費立替・HP制作まで。</p>
+        <p class="plan-desc">事業を拡大したい方に。全サービスをフル活用。</p>
         <div class="plan-features">
-          <div class="plan-feature">案件紹介（手数料0円）</div>
+          <div class="plan-feature">協力会員のすべての機能</div>
+          <div class="plan-feature">元請機能（手数料3%）</div>
+          <div class="plan-feature">無料HP制作</div>
+          <div class="plan-feature">シェアオフィス利用</div>
           <div class="plan-feature">材料費立替</div>
-          <div class="plan-feature">コスト削減（独自仕入れ）</div>
-          <div class="plan-feature">HP制作サービス</div>
-          <div class="plan-feature">メンバー一覧掲載</div>
-          <div class="plan-feature">BB会参加</div>
-          <div class="plan-feature">トラブルサポート</div>
+          <div class="plan-feature">資材の共同購入</div>
+          <div class="plan-feature">士業紹介（弁護士・税理士）</div>
         </div>
         <a href="registration.html" class="btn btn-primary" style="width:100%;text-align:center;">このプランで入会</a>
-      </div>
-      <!-- プレミアム -->
-      <div class="plan-card">
-        <div class="plan-name">プレミアム</div>
-        <div class="plan-price">&yen;50,000<span>/月</span></div>
-        <p class="plan-desc">最優先の案件紹介とマージン0%。事業拡大を目指す方に。</p>
-        <div class="plan-features">
-          <div class="plan-feature">メンバーの全機能</div>
-          <div class="plan-feature">マージン0%の案件実行</div>
-          <div class="plan-feature">最優先で案件紹介</div>
-          <div class="plan-feature">プレミアムHP制作</div>
-          <div class="plan-feature">メンバー一覧で特別表示</div>
-          <div class="plan-feature">経営アドバイザリー</div>
-          <div class="plan-feature">優先トラブルサポート</div>
-        </div>
-        <a href="registration.html" class="btn btn-secondary" style="width:100%;text-align:center;">このプランで入会</a>
       </div>
     </div>
   </div>
@@ -374,69 +359,58 @@
         <thead>
           <tr>
             <th>機能</th>
-            <th>協力会<br><small style="font-weight:400;opacity:0.7;">&yen;10,000/月</small></th>
-            <th class="th-recommended">メンバー<br><small style="font-weight:400;opacity:0.85;">&yen;30,000/月</small></th>
-            <th>プレミアム<br><small style="font-weight:400;opacity:0.7;">&yen;50,000/月</small></th>
+            <th>協力会員<br><small style="font-weight:400;opacity:0.7;">&yen;10,000/月</small></th>
+            <th class="th-recommended">スタンダード<br><small style="font-weight:400;opacity:0.85;">&yen;30,000/月</small></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Knockアプリ利用</td>
-            <td><span class="check">&#10003;</span></td>
+            <td>案件紹介</td>
             <td><span class="check">&#10003;</span></td>
             <td><span class="check">&#10003;</span></td>
           </tr>
           <tr>
-            <td>案件紹介</td>
-            <td>限定的</td>
-            <td><span class="text-blue">&#10003; 手数料0円</span></td>
-            <td><span class="text-highlight">&#10003; 最優先</span></td>
+            <td>メンバー一覧への掲載</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>メンバー同士の仕事紹介</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>BB会・イベント参加</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>元請機能（ディオ名義受注）</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="text-blue">&#10003; 手数料3%</span></td>
+          </tr>
+          <tr>
+            <td>無料HP制作</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>シェアオフィス利用</td>
+            <td><span class="cross">&mdash;</span></td>
+            <td><span class="check">&#10003;</span></td>
           </tr>
           <tr>
             <td>材料費立替</td>
             <td><span class="cross">&mdash;</span></td>
             <td><span class="check">&#10003;</span></td>
-            <td><span class="check">&#10003;</span></td>
           </tr>
           <tr>
-            <td>コスト削減（独自仕入れ）</td>
+            <td>資材の共同購入</td>
             <td><span class="cross">&mdash;</span></td>
             <td><span class="check">&#10003;</span></td>
-            <td><span class="check">&#10003;</span></td>
           </tr>
           <tr>
-            <td>HP制作</td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="text-highlight">&#10003; プレミアム版</span></td>
-          </tr>
-          <tr>
-            <td>メンバー一覧掲載</td>
-            <td><span class="cross">&mdash;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="text-highlight">&#10003; 特別表示</span></td>
-          </tr>
-          <tr>
-            <td>BB会参加</td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>トラブルサポート</td>
-            <td>基本</td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="text-highlight">&#10003; 優先</span></td>
-          </tr>
-          <tr>
-            <td>マージン率</td>
-            <td>あり</td>
-            <td>あり</td>
-            <td><span class="text-highlight">0%</span></td>
-          </tr>
-          <tr>
-            <td>経営アドバイザリー</td>
-            <td><span class="cross">&mdash;</span></td>
+            <td>士業紹介（弁護士・税理士）</td>
             <td><span class="cross">&mdash;</span></td>
             <td><span class="check">&#10003;</span></td>
           </tr>
@@ -454,44 +428,31 @@
       <h2 class="section-title">各プランはこんな方におすすめ</h2>
       <p class="section-subtitle">ご自身の状況や目標に合わせて、最適なプランをお選びください。</p>
     </div>
-    <div class="recommend-grid fade-up">
-      <!-- 協力会向け -->
+    <div class="recommend-grid fade-up" style="max-width:800px;margin-left:auto;margin-right:auto;">
+      <!-- 協力会員向け -->
       <div class="recommend-card">
         <div class="recommend-card-icon">&#128296;</div>
-        <div class="recommend-card-plan">協力会 &yen;10,000/月</div>
-        <h3 class="recommend-card-title">まずは案件を受けたい職人</h3>
-        <p class="recommend-card-desc">独立したばかり、または空いている日に仕事を入れたい方。Knockアプリで手軽に案件を受注できます。</p>
+        <div class="recommend-card-plan">協力会員 &yen;10,000/月</div>
+        <h3 class="recommend-card-title">まず仲間と繋がりたい職人</h3>
+        <p class="recommend-card-desc">横のつながりを広げ、案件紹介を受けたい方。低コストで建設業ネットワークに参加できます。</p>
         <ul class="recommend-card-list">
           <li>独立して間もない方</li>
           <li>閑散期の仕事を埋めたい方</li>
           <li>まずは低コストで始めたい方</li>
-          <li>横のつながりを作りたい方</li>
+          <li>多業種の横のつながりを作りたい方</li>
         </ul>
       </div>
-      <!-- メンバー向け -->
+      <!-- スタンダード向け -->
       <div class="recommend-card" style="border-color: var(--blue);">
         <div class="recommend-card-icon">&#128188;</div>
-        <div class="recommend-card-plan">メンバー &yen;30,000/月</div>
-        <h3 class="recommend-card-title">経営を安定させたい事業者</h3>
-        <p class="recommend-card-desc">案件紹介だけでなく、材料費立替やHP制作など、事業を総合的にサポートするフルパッケージ。</p>
+        <div class="recommend-card-plan">スタンダード &yen;30,000/月</div>
+        <h3 class="recommend-card-title">事業を拡大したい事業者</h3>
+        <p class="recommend-card-desc">元請機能・材料費立替・HP制作など、事業を総合的にサポートするフルパッケージ。</p>
         <ul class="recommend-card-list">
-          <li>安定した案件確保をしたい方</li>
+          <li>500万円以上の工事を請けたい方</li>
           <li>資金繰りに不安がある方</li>
-          <li>自社HPで集客力を高めたい方</li>
+          <li>自社HPで信用力を高めたい方</li>
           <li>材料コストを下げたい方</li>
-        </ul>
-      </div>
-      <!-- プレミアム向け -->
-      <div class="recommend-card">
-        <div class="recommend-card-icon">&#127775;</div>
-        <div class="recommend-card-plan">プレミアム &yen;50,000/月</div>
-        <h3 class="recommend-card-title">事業拡大を目指す経営者</h3>
-        <p class="recommend-card-desc">マージン0%で利益を最大化。最優先の案件紹介と経営アドバイザリーで、ビジネスの成長を加速します。</p>
-        <ul class="recommend-card-list">
-          <li>売上をさらに伸ばしたい方</li>
-          <li>マージンをなくし利益率を上げたい方</li>
-          <li>優先的に案件を確保したい方</li>
-          <li>経営の相談相手が欲しい方</li>
         </ul>
       </div>
     </div>
@@ -541,7 +502,7 @@
         <div class="footer-links" style="margin-top:20px;">
           <a href="service.html" class="footer-link">サービス</a>
           <a href="plan.html" class="footer-link">料金プラン</a>
-          <a href="members.html" class="footer-link">メンバー紹介</a>
+          <a href="members-showcase.html" class="footer-link">メンバー紹介</a>
           <a href="company.html" class="footer-link">会社概要</a>
           <a href="contact.html" class="footer-link">お問い合わせ</a>
           <a href="faq.html" class="footer-link">よくある質問</a>
