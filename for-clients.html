@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>メンバー紹介｜Builders Base</title>
-  <meta name="description" content="Builders Baseに所属する多種多様な建設業の職人・事業者をご紹介。内装・塗装・設備・電気・解体など、幅広い業種のプロフェッショナルが集結しています。">
-  <meta property="og:title" content="メンバー紹介｜Builders Base">
-  <meta property="og:description" content="多種多様な建設業のプロフェッショナルが集結するBuilders Baseのメンバーネットワーク。">
-  <meta property="og:type" content="website">
+  <title>工事のご依頼｜Builders Base</title>
+  <meta name="description" content="Builders Baseは完全紹介制の職人プラットフォーム。身元確認済みの信頼できる職人が、内装・塗装・設備・電気・解体・防水など幅広い業種に対応。工事のご依頼・ご相談はこちら。">
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,17 +38,18 @@
     .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
     @media (min-width: 768px) { .container { padding: 0 40px; } }
 
-    /* === Buttons === */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 32px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: all 0.25s; text-decoration: none; }
     .btn-primary { background: var(--blue); color: var(--white); }
     .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,124,255,0.25); }
     .btn-secondary { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); }
     .btn-secondary:hover { background: var(--blue-light); }
+    .btn-white { background: var(--white); color: var(--gray-900); }
+    .btn-white:hover { background: var(--gray-100); transform: translateY(-1px); }
     .btn-outline-white { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.4); }
     .btn-outline-white:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
     .btn-lg { padding: 18px 40px; font-size: 16px; }
 
-    /* === Navigation === */
+    /* Nav */
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 0; transition: all 0.3s; }
     .nav.scrolled { background: rgba(255,255,255,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(0,0,0,0.06); padding: 12px 0; }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
@@ -95,134 +93,124 @@
       .hamburger { display: none; }
     }
 
-    /* === Hero === */
-    .hero { background: var(--black); padding: 160px 0 80px; position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; top: -40%; right: -15%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,124,255,0.06) 0%, transparent 70%); pointer-events: none; }
-    .hero-label { font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; display: block; }
-    .hero-title { font-family: 'Archivo', 'Noto Sans JP', sans-serif; font-size: 36px; font-weight: 900; color: var(--white); line-height: 1.25; margin-bottom: 20px; }
-    .hero-desc { font-size: 16px; color: rgba(255,255,255,0.55); max-width: 520px; line-height: 1.9; }
-    @media (min-width: 768px) {
-      .hero { padding: 180px 0 100px; }
-      .hero-title { font-size: 52px; }
-      .hero-desc { font-size: 17px; }
-    }
-
-    /* === Stats Strip === */
-    .stats-strip { background: var(--black); padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.06); }
-    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
-    .stat-item { text-align: center; }
-    .stat-number { font-family: 'Archivo', sans-serif; font-size: 48px; font-weight: 900; color: var(--white); line-height: 1.1; letter-spacing: -0.02em; }
-    .stat-number span { font-size: 16px; font-weight: 600; letter-spacing: 0; }
-    .stat-label { font-size: 13px; color: var(--gray-400); margin-top: 4px; }
-    @media (min-width: 768px) {
-      .stats-grid { max-width: 480px; margin: 0 auto; }
-      .stat-number { font-size: 64px; }
-      .stat-item + .stat-item { border-left: 1px solid rgba(255,255,255,0.08); }
-    }
-
-    /* === Gallery === */
-    .gallery { padding: 80px 0; }
-    .gallery-header { max-width: 680px; margin-bottom: 48px; }
-    .gallery-label { font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
-    .gallery-title { font-family: 'Archivo', 'Noto Sans JP', sans-serif; font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 12px; }
-    .gallery-sub { font-size: 15px; color: var(--gray-500); }
-    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .gallery-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; transition: all 0.3s; }
-    .gallery-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.08); transform: translateY(-4px); border-color: var(--blue); }
-    .gallery-card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--gray-100); }
-    .gallery-card-body { padding: 16px; }
-    .gallery-card-company { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; line-height: 1.4; }
-    .gallery-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-    .gallery-card-tag { font-size: 11px; padding: 3px 10px; background: var(--blue-light); color: var(--blue); border-radius: 100px; font-weight: 500; }
-    .gallery-wrapper { position: relative; }
-    .gallery-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(transparent, var(--white)); pointer-events: none; display: none; }
-    .gallery-more { text-align: center; margin-top: -16px; position: relative; z-index: 1; display: none; }
-    .gallery-more-badge { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: var(--white); border: 1.5px solid var(--blue); border-radius: 100px; font-size: 14px; font-weight: 700; color: var(--blue); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    .gallery-loading { text-align: center; padding: 64px 0; color: var(--gray-500); }
-    .spinner { width: 28px; height: 28px; border: 2.5px solid var(--gray-200); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* Hero */
+    .fc-hero { position: relative; min-height: 70vh; display: flex; align-items: center; background: var(--gray-900); overflow: hidden; }
+    .fc-hero-bg { position: absolute; inset: 0; background-image: url('assets/images/hero-members.jpg'); background-size: cover; background-position: center bottom; opacity: 0.2; }
+    .fc-hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.95) 100%); }
+    .fc-hero-content { position: relative; z-index: 2; padding: 140px 0 80px; max-width: 640px; }
+    .fc-hero-label { font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; }
+    .fc-hero-title { font-family: 'Archivo', 'Noto Sans JP', sans-serif; font-size: 32px; font-weight: 900; color: var(--white); line-height: 1.35; margin-bottom: 24px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0; }
+    .fc-hero-desc { font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 40px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.6s; opacity: 0; }
+    .fc-hero-actions { display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.8s; opacity: 0; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (min-width: 768px) {
-      .gallery { padding: 120px 0; }
-      .gallery-title { font-size: 36px; }
-      .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    }
-    @media (min-width: 1024px) {
-      .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+      .fc-hero-title { font-size: 48px; }
+      .fc-hero-desc { font-size: 17px; }
+      .fc-hero-actions { flex-direction: row; gap: 16px; }
     }
 
-    /* === Trades === */
-    .trades { padding: 80px 0; background: var(--gray-50); }
-    .trades-header { text-align: center; margin-bottom: 40px; }
-    .trades-label { font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
-    .trades-title { font-family: 'Archivo', 'Noto Sans JP', sans-serif; font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 12px; }
-    .trades-sub { font-size: 15px; color: var(--gray-500); max-width: 520px; margin: 0 auto; }
-    .trades-cloud { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-    .trade-tag { padding: 8px 18px; border: 1px solid var(--gray-200); border-radius: 100px; font-size: 14px; font-weight: 500; color: var(--gray-700); background: var(--white); transition: all 0.25s; }
-    .trade-tag:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    /* Why Section */
+    .fc-why { padding: 100px 0; }
+    .fc-why-header { max-width: 640px; margin-bottom: 64px; }
+    .fc-label { font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
+    .fc-title { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; }
+    .fc-sub { font-size: 15px; color: var(--gray-500); line-height: 1.8; }
+
+    .fc-reasons { display: flex; flex-direction: column; gap: 0; border-top: 2px solid var(--black); }
+    .fc-reason { display: grid; grid-template-columns: 1fr; gap: 8px; padding: 32px 0; border-bottom: 1px solid var(--gray-200); }
+    .fc-reason-top { display: flex; align-items: baseline; gap: 16px; }
+    .fc-reason-num { font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; color: var(--blue); min-width: 28px; }
+    .fc-reason-name { font-size: 18px; font-weight: 800; }
+    .fc-reason-desc { font-size: 14px; color: var(--gray-500); line-height: 1.8; padding-left: 44px; }
 
     @media (min-width: 768px) {
-      .trades { padding: 120px 0; }
-      .trades-title { font-size: 36px; }
+      .fc-why { padding: 120px 0; }
+      .fc-title { font-size: 36px; }
+      .fc-reason { padding: 36px 0; }
+      .fc-reason-name { font-size: 20px; }
     }
 
-    /* === Benefits === */
-    .benefits { padding: 80px 0; }
-    .benefits-header { max-width: 680px; margin-bottom: 56px; }
-    .benefits-label { font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
-    .benefits-title { font-family: 'Archivo', 'Noto Sans JP', sans-serif; font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 12px; }
-    .benefits-sub { font-size: 15px; color: var(--gray-500); }
-    .benefits-list { border-top: 2px solid var(--black); }
-    .benefit-row { display: grid; grid-template-columns: 1fr; gap: 8px; padding: 32px 0; border-bottom: 1px solid var(--gray-200); }
-    .benefit-row-top { display: flex; align-items: baseline; gap: 16px; }
-    .benefit-num { font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; color: var(--blue); min-width: 28px; }
-    .benefit-name { font-size: 18px; font-weight: 800; }
-    .benefit-tag { font-size: 12px; color: var(--blue); font-weight: 600; background: var(--blue-light); padding: 2px 10px; border-radius: 100px; margin-left: auto; white-space: nowrap; }
-    .benefit-desc { font-size: 14px; color: var(--gray-500); line-height: 1.8; padding-left: 44px; }
+    /* Trades */
+    .fc-trades { background: var(--gray-50); padding: 80px 0; }
+    .fc-trades-header { text-align: center; margin-bottom: 48px; }
+    .fc-trades-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 800px; margin: 0 auto; }
+    .fc-trade-tag { padding: 10px 24px; border: 1.5px solid var(--gray-300); border-radius: 100px; font-size: 15px; font-weight: 600; color: var(--gray-700); transition: all 0.3s; cursor: default; }
+    .fc-trade-tag:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
 
     @media (min-width: 768px) {
-      .benefits { padding: 120px 0; }
-      .benefits-title { font-size: 36px; }
-      .benefit-row { padding: 40px 0; }
-      .benefit-name { font-size: 20px; }
+      .fc-trades { padding: 100px 0; }
     }
 
-    /* === CTA === */
-    .cta { background: var(--black); padding: 80px 0; text-align: center; position: relative; overflow: hidden; }
-    .cta::before { content: ''; position: absolute; bottom: -30%; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(0,124,255,0.1) 0%, transparent 70%); pointer-events: none; }
-    .cta-title { font-family: 'Archivo', 'Noto Sans JP', sans-serif; font-size: 28px; font-weight: 900; color: var(--white); margin-bottom: 16px; line-height: 1.4; position: relative; }
-    .cta-desc { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 40px; position: relative; }
-    .cta-buttons { display: flex; flex-direction: column; gap: 12px; justify-content: center; align-items: center; position: relative; }
-    .cta-contact { margin-top: 32px; font-size: 13px; color: rgba(255,255,255,0.35); position: relative; }
-    .cta-contact a { color: rgba(255,255,255,0.6); }
-    .cta-contact a:hover { color: var(--white); }
+    /* Flow */
+    .fc-flow { padding: 100px 0; }
+    .fc-flow-header { text-align: center; margin-bottom: 64px; }
+    .fc-flow-steps { display: grid; grid-template-columns: 1fr; gap: 32px; max-width: 900px; margin: 0 auto; }
+    .fc-flow-step { display: flex; gap: 24px; align-items: flex-start; }
+    .fc-flow-num { font-family: 'Archivo', sans-serif; font-size: 48px; font-weight: 900; color: var(--blue); line-height: 1; flex-shrink: 0; width: 56px; letter-spacing: -0.04em; }
+    .fc-flow-body h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .fc-flow-body p { font-size: 14px; color: var(--gray-500); line-height: 1.8; }
+    .fc-flow-divider { width: 1px; height: 24px; background: var(--gray-200); margin-left: 28px; }
+
     @media (min-width: 768px) {
-      .cta { padding: 120px 0; }
-      .cta-title { font-size: 40px; }
-      .cta-buttons { flex-direction: row; }
+      .fc-flow { padding: 120px 0; }
+      .fc-flow-steps { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+      .fc-flow-step { flex-direction: column; text-align: center; }
+      .fc-flow-num { width: auto; font-size: 56px; margin-bottom: 8px; }
+      .fc-flow-divider { display: none; }
     }
 
-    /* === Footer === */
-    .footer { background: var(--black); padding: 56px 0 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+    /* Trust */
+    .fc-trust { background: var(--black); padding: 80px 0; color: var(--white); }
+    .fc-trust-header { text-align: center; margin-bottom: 48px; }
+    .fc-trust-header .fc-title { color: var(--white); }
+    .fc-trust-header .fc-sub { color: var(--gray-400); }
+    .fc-trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 640px; margin: 0 auto; }
+    .fc-trust-item { text-align: center; padding: 32px 20px; border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); background: rgba(255,255,255,0.03); }
+    .fc-trust-num { font-family: 'Archivo', sans-serif; font-size: 40px; font-weight: 900; color: var(--blue); line-height: 1.1; margin-bottom: 4px; }
+    .fc-trust-num span { font-size: 16px; font-weight: 600; }
+    .fc-trust-label { font-size: 13px; color: var(--gray-400); }
+
+    @media (min-width: 768px) {
+      .fc-trust { padding: 100px 0; }
+      .fc-trust-grid { grid-template-columns: repeat(4, 1fr); max-width: 900px; }
+      .fc-trust-num { font-size: 48px; }
+    }
+
+    /* CTA */
+    .fc-cta { padding: 100px 0; text-align: center; }
+    .fc-cta-title { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; }
+    .fc-cta-desc { font-size: 15px; color: var(--gray-500); margin-bottom: 40px; line-height: 1.8; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .fc-cta-buttons { display: flex; flex-direction: column; gap: 12px; justify-content: center; align-items: center; margin-bottom: 32px; }
+    .fc-cta-contact { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--gray-400); }
+    .fc-cta-contact a { color: var(--gray-700); font-weight: 600; }
+
+    @media (min-width: 768px) {
+      .fc-cta { padding: 140px 0; }
+      .fc-cta-title { font-size: 40px; }
+      .fc-cta-buttons { flex-direction: row; }
+    }
+
+    /* Footer */
+    .footer { background: var(--black); color: var(--white); padding: 56px 0 28px; }
     .footer-inner { display: flex; flex-direction: column; gap: 32px; }
+    .footer-logo svg { height: 28px; width: auto; }
     .footer-links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; }
     .footer-link { font-size: 13px; color: rgba(255,255,255,0.5); transition: color 0.3s; }
     .footer-link:hover { color: var(--white); }
     .footer-info { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.8; }
     .footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 12px; color: rgba(255,255,255,0.25); }
-    @media (min-width: 768px) {
-      .footer-inner { flex-direction: row; justify-content: space-between; }
-    }
+    @media (min-width: 768px) { .footer-inner { flex-direction: row; justify-content: space-between; } }
 
-    /* === Reveal === */
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
 <!-- Navigation -->
-<nav class="nav scrolled" id="nav">
+<nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
       <svg class="logo-light" width="133" height="62" viewBox="0 0 133 62" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.2948 8.14661H15.2412C14.3175 8.14661 13.8557 8.37529 13.8557 8.83265V62H4.76289C2.8 62 1.50103 61.7142 0.865979 61.1425C0.288659 60.5136 0 59.2273 0 57.2835V4.88797C0 2.88705 0.288659 1.57216 0.865979 0.943296C1.50103 0.314432 2.8 0 4.76289 0H23.2948V8.14661ZM28.1443 35.0733H36.3711C38.7381 35.0733 40.268 35.6164 40.9608 36.7026C41.6536 37.7317 42 39.3896 42 41.6764V54.3679C42 58.1411 40.9897 60.4564 38.9691 61.314C37.9876 61.7713 36.7464 62 35.2454 62H17.3196V53.9391H24.5938C26.9608 53.9391 28.1443 53.1102 28.1443 51.4523V35.0733ZM27.0186 0H35.2454C37.5546 0 39.0268 0.514524 39.6619 1.54357C40.3546 2.57262 40.701 4.25911 40.701 6.60305V23.0678C40.701 26.3836 40.0948 28.7847 38.8825 30.2711C37.7278 31.7575 35.2742 32.5007 31.5216 32.5007H17.3196V24.3541H23.7278C25.1711 24.3541 26.066 24.0111 26.4124 23.325C26.8165 22.639 27.0186 21.5814 27.0186 20.1521V0Z" fill="white"/><path d="M56.736 21.656H61.156V36.476H57.022V34.474H56.97C56.112 36.008 54.578 36.736 52.706 36.736C50.054 36.736 48 35.15 48 31.692V21.656H52.42V30.756C52.42 32.758 53.044 33.46 54.474 33.46C55.748 33.46 56.736 32.68 56.736 30.756V21.656Z" fill="white"/><path d="M66.5114 15C67.9154 15 69.0854 15.884 69.0854 17.496C69.0854 19.082 67.9154 20.07 66.5114 20.07C65.1074 20.07 64.0154 19.16 64.0154 17.496C64.0154 15.884 65.1074 15 66.5114 15ZM68.7214 21.656V36.476H64.3014V21.656H68.7214Z" fill="white"/><path d="M76.2872 15.676V32.394C76.2872 33.2 76.5472 33.616 77.3272 33.616C77.4312 33.616 77.6132 33.616 77.7692 33.564V36.476C77.2752 36.632 76.4952 36.736 75.7932 36.736C73.5572 36.736 71.8672 35.93 71.8672 33.122V15.676H76.2872Z" fill="white"/><path d="M88.198 15.676H92.618V36.476H88.328V36.32C88.328 35.852 88.354 35.462 88.458 34.864H88.354C87.418 36.06 86.118 36.736 84.532 36.736C80.658 36.736 78.552 34.006 78.552 29.014C78.552 24.568 81.152 21.396 84.792 21.396C86.326 21.396 87.522 21.968 88.406 23.06H88.484C88.25 21.994 88.198 21.24 88.198 19.03V15.676ZM85.832 33.512C87.47 33.512 88.406 31.874 88.406 28.988C88.406 25.998 87.522 24.568 85.702 24.568C84.064 24.568 83.05 26.258 83.05 29.014C83.05 31.848 84.09 33.512 85.832 33.512Z" fill="white"/><path d="M108.214 28.104V30.366H99.4264C99.6864 32.836 100.674 33.746 102 33.746C102.988 33.746 103.638 33.07 103.95 31.822L107.824 32.992C106.576 35.982 104.47 36.736 101.948 36.736C97.4764 36.736 94.9544 34.084 94.9544 29.3C94.9544 23.996 97.7884 21.396 101.584 21.396C106.316 21.396 108.214 24.412 108.214 28.104ZM99.4524 27.402H104.106C104.08 25.374 103.092 24.36 101.818 24.36C100.726 24.36 99.7384 25.036 99.4524 27.402Z" fill="white"/><path d="M114.151 25.556H114.281C114.697 22.748 115.997 21.318 118.076 21.318C118.467 21.318 118.935 21.344 119.325 21.422V25.114C118.935 25.036 118.467 25.01 118.076 25.01C116.152 25.01 115.008 25.504 115.008 28.468V36.476H110.562V21.656H114.151V25.556Z" fill="white"/><path d="M119.733 32.758L123.399 31.406C124.231 33.174 125.271 33.928 126.493 33.928C127.507 33.928 128.027 33.434 128.027 32.758C128.027 31.666 126.935 31.25 124.335 30.444C121.631 29.612 120.383 28.468 120.383 26.154C120.383 23.294 122.619 21.344 126.103 21.344C129.197 21.344 131.329 22.722 131.979 25.244L128.417 26.336C128.053 24.932 127.091 24.126 125.921 24.126C125.011 24.126 124.517 24.568 124.517 25.348C124.517 26.128 125.115 26.57 126.883 27.064C130.367 28.026 132.161 29.222 132.161 31.952C132.161 34.942 129.821 36.788 126.025 36.788C123.061 36.788 120.799 35.566 119.733 32.758Z" fill="white"/><path d="M52.34 48.692H52.418C53.328 47.106 54.784 46.196 56.656 46.196C60.53 46.196 62.636 48.926 62.636 53.918C62.636 58.364 60.036 61.536 56.396 61.536C54.602 61.536 53.25 60.756 52.392 59.3L52.34 59.326C52.6 59.872 52.73 60.184 52.73 61.146V61.276H48.44V40.476H52.86V45.416C52.86 46.716 52.652 47.938 52.34 48.692ZM55.486 58.364C57.046 58.364 58.138 56.804 58.138 53.918C58.138 51.006 57.046 49.42 55.356 49.42C53.744 49.42 52.782 51.006 52.782 53.944C52.782 56.908 53.64 58.364 55.486 58.364Z" fill="white"/><path d="M79.5222 57.558L83.1882 56.206C84.0202 57.974 85.0602 58.728 86.2822 58.728C87.2962 58.728 87.8162 58.234 87.8162 57.558C87.8162 56.466 86.7242 56.05 84.1242 55.244C81.4202 54.412 80.1722 53.268 80.1722 50.954C80.1722 48.094 82.4082 46.144 85.8922 46.144C88.9862 46.144 91.1182 47.522 91.7682 50.044L88.2062 51.136C87.8422 49.732 86.8802 48.926 85.7102 48.926C84.8002 48.926 84.3062 49.368 84.3062 50.148C84.3062 50.928 84.9042 51.37 86.6722 51.864C90.1562 52.826 91.9502 54.022 91.9502 56.752C91.9502 59.742 89.6102 61.588 85.8142 61.588C82.8502 61.588 80.5882 60.366 79.5222 57.558Z" fill="white"/><path d="M77.2413 51.5V56.388C77.2413 57.324 77.5793 57.766 78.2553 57.766C78.4893 57.766 78.5673 57.766 78.6193 57.74V60.86C77.7873 61.172 77.1373 61.276 76.2533 61.276C74.5633 61.276 73.7833 60.704 73.4193 59.586C72.5353 60.912 71.1573 61.536 69.2593 61.536C66.1913 61.536 64.3193 59.898 64.3193 57.116C64.3193 54.048 66.7893 52.41 70.7153 52.41C71.2873 52.41 72.0673 52.462 72.7953 52.592V51.708C72.7953 49.914 72.1193 49.082 70.9233 49.082C69.7013 49.082 69.0253 49.836 68.7393 51.5L64.9693 50.798C65.6973 47.808 67.9073 46.196 71.2353 46.196C74.9533 46.196 77.2413 48.146 77.2413 51.5ZM70.5333 58.546C72.0413 58.546 72.7953 57.61 72.7953 55.452C72.3013 55.322 71.5993 55.244 70.9493 55.244C69.5973 55.244 68.7393 55.894 68.7393 57.012C68.7393 57.896 69.4153 58.546 70.5333 58.546Z" fill="white"/><path d="M106.649 52.904V55.166H97.8605C98.1205 57.636 99.1085 58.546 100.435 58.546C101.423 58.546 102.073 57.87 102.385 56.622L106.259 57.792C105.011 60.782 102.905 61.536 100.383 61.536C95.9105 61.536 93.3885 58.884 93.3885 54.1C93.3885 48.796 96.2225 46.196 100.019 46.196C104.751 46.196 106.649 49.212 106.649 52.904ZM97.8865 52.202H102.541C102.515 50.174 101.527 49.16 100.253 49.16C99.1605 49.16 98.1725 49.836 97.8865 52.202Z" fill="white"/></svg>
@@ -264,111 +252,166 @@
 </div>
 
 <!-- Hero -->
-<section class="hero">
+<section class="fc-hero">
+  <div class="fc-hero-bg"></div>
+  <div class="fc-hero-overlay"></div>
   <div class="container">
-    <span class="hero-label reveal">Members</span>
-    <h1 class="hero-title reveal">多種多様なプロが集まる、<br>建設業のネットワーク。</h1>
-    <p class="hero-desc reveal">内装・塗装・設備・電気・解体・防水 ── 幅広い業種の<br>プロフェッショナルがBuilders Baseに集結しています。</p>
-  </div>
-</section>
-
-<!-- Stats Strip -->
-<section class="stats-strip" id="stats">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item">
-        <div class="stat-number" id="statMembers">--</div>
-        <div class="stat-label">累計メンバー数</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number" id="statTrades">--</div>
-        <div class="stat-label">対応業種数</div>
+    <div class="fc-hero-content">
+      <div class="fc-hero-label">For Clients</div>
+      <h1 class="fc-hero-title">信頼できる職人に、<br>工事を依頼しませんか。</h1>
+      <p class="fc-hero-desc">Builders Baseは完全紹介制の職人プラットフォーム。身元確認済みの信頼できる職人が、内装・塗装・設備・電気・解体・防水など幅広い業種で対応します。窓口はひとつ、ワンストップで工事を手配できます。</p>
+      <div class="fc-hero-actions">
+        <a href="contact.html" class="btn btn-primary btn-lg">工事のご相談・お問い合わせ</a>
+        <a href="tel:03-6384-7984" class="btn btn-outline-white btn-lg">Tel: 03-6384-7984</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Gallery -->
-<section class="gallery" id="gallery">
+<!-- Why Builders Base -->
+<section class="fc-why">
   <div class="container">
-    <div class="gallery-header reveal">
-      <div class="gallery-label">Gallery</div>
-      <h2 class="gallery-title">活躍するメンバーたち</h2>
-      <p class="gallery-sub">さまざまな専門分野を持つプロフェッショナルが、日々現場で活躍しています。</p>
+    <div class="fc-why-header reveal">
+      <div class="fc-label">Why Builders Base?</div>
+      <h2 class="fc-title">Builders Baseに工事を<br>依頼する4つの理由</h2>
+      <p class="fc-sub">不特定の業者への外注とは違う。クローズドネットワークだからこそ実現できる、安心と品質をお届けします。</p>
     </div>
-    <div class="gallery-loading reveal" id="galleryLoading">
-      <div class="spinner"></div>
-      <p>メンバー情報を読み込み中...</p>
-    </div>
-    <div class="gallery-wrapper reveal" id="galleryWrapper" style="display:none;">
-      <div class="gallery-grid" id="galleryGrid"></div>
-      <div class="gallery-fade" id="galleryFade"></div>
-    </div>
-    <div class="gallery-more" id="galleryMore">
-      <div class="gallery-more-badge" id="galleryMoreBadge">+ 他にも多数のメンバーが在籍</div>
-    </div>
-  </div>
-</section>
-
-<!-- Trades Cloud -->
-<section class="trades" id="trades">
-  <div class="container">
-    <div class="trades-header reveal">
-      <div class="trades-label">Expertise</div>
-      <h2 class="trades-title">幅広い業種をカバー</h2>
-      <p class="trades-sub">内装から設備、解体まで。建設に関わる多彩な専門分野のプロが在籍しています。</p>
-    </div>
-    <div class="trades-cloud reveal" id="tradesCloud"></div>
-  </div>
-</section>
-
-<!-- Benefits -->
-<section class="benefits">
-  <div class="container">
-    <div class="benefits-header reveal">
-      <div class="benefits-label">Benefits</div>
-      <h2 class="benefits-title">このネットワークに加わるメリット</h2>
-      <p class="benefits-sub">Builders Baseのメンバーネットワークは、あなたのビジネスを強力にサポートします。</p>
-    </div>
-    <div class="benefits-list reveal">
-      <div class="benefit-row">
-        <div class="benefit-row-top">
-          <span class="benefit-num">01</span>
-          <span class="benefit-name">多業種との連携</span>
-          <span class="benefit-tag">ビジネス拡大</span>
+    <div class="fc-reasons reveal">
+      <div class="fc-reason">
+        <div class="fc-reason-top">
+          <span class="fc-reason-num">01</span>
+          <span class="fc-reason-name">完全紹介制・身元確認済みの職人のみ</span>
         </div>
-        <p class="benefit-desc">自社では対応できない工事も、メンバー間の連携で受注可能に。異なる専門分野の職人と協力し合うことで、ビジネスチャンスが大きく広がります。</p>
+        <div class="fc-reason-desc">不特定多数が登録できるマッチングサイトとは異なり、既存メンバーからの紹介でのみ加入可能。全員の身元・技術力が確認された信頼できる職人だけが在籍しています。</div>
       </div>
-      <div class="benefit-row">
-        <div class="benefit-row-top">
-          <span class="benefit-num">02</span>
-          <span class="benefit-name">信頼できる仲間</span>
-          <span class="benefit-tag">審査済み</span>
+      <div class="fc-reason">
+        <div class="fc-reason-top">
+          <span class="fc-reason-num">02</span>
+          <span class="fc-reason-name">幅広い業種をワンストップで手配</span>
         </div>
-        <p class="benefit-desc">審査を通過したメンバーのみが所属。安心して仕事を任せ合える関係を構築できます。月例交流会でメンバー同士の絆も深まります。</p>
+        <div class="fc-reason-desc">内装・塗装・設備・電気・解体・防水・外構・足場など、建設に関わる多彩な業種が在籍。複数業種が必要な現場も、窓口ひとつでまとめて手配できます。業者を個別に探す手間がなくなります。</div>
       </div>
-      <div class="benefit-row">
-        <div class="benefit-row-top">
-          <span class="benefit-num">03</span>
-          <span class="benefit-name">案件の安定化</span>
-          <span class="benefit-tag">手数料0%</span>
+      <div class="fc-reason">
+        <div class="fc-reason-top">
+          <span class="fc-reason-num">03</span>
+          <span class="fc-reason-name">元請として品質管理・契約管理まで一貫対応</span>
         </div>
-        <p class="benefit-desc">Builders Base経由で案件を紹介。閑散期の不安を解消し、安定した経営を実現します。メンバー間の直接連携は手数料0%で実現できます。</p>
+        <div class="fc-reason-desc">運営会社の株式会社ディオが元請として契約・品質管理・請求管理を担当。発注者にとって「誰に責任があるのか分からない」という不安を解消し、安心して工事をお任せいただけます。</div>
+      </div>
+      <div class="fc-reason">
+        <div class="fc-reason-top">
+          <span class="fc-reason-num">04</span>
+          <span class="fc-reason-name">大手企業との取引実績</span>
+        </div>
+        <div class="fc-reason-desc">年間X億円規模の工事を管理してきた実績があります。個人宅のリフォームから、法人の内装工事・店舗施工まで、規模を問わず対応可能です。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trades -->
+<section class="fc-trades">
+  <div class="container">
+    <div class="fc-trades-header reveal">
+      <div class="fc-label">Trades</div>
+      <h2 class="fc-title">対応可能な業種</h2>
+      <p class="fc-sub">多種多様な業種の職人が在籍。あらゆる建設ニーズに対応します。</p>
+    </div>
+    <div class="fc-trades-grid reveal">
+      <span class="fc-trade-tag">リフォーム</span>
+      <span class="fc-trade-tag">内装工事</span>
+      <span class="fc-trade-tag">塗装工事</span>
+      <span class="fc-trade-tag">設備工事</span>
+      <span class="fc-trade-tag">電気工事</span>
+      <span class="fc-trade-tag">解体工事</span>
+      <span class="fc-trade-tag">防水工事</span>
+      <span class="fc-trade-tag">外構工事</span>
+      <span class="fc-trade-tag">足場工事</span>
+      <span class="fc-trade-tag">重機</span>
+      <span class="fc-trade-tag">空調設備</span>
+      <span class="fc-trade-tag">タイル工事</span>
+      <span class="fc-trade-tag">左官工事</span>
+      <span class="fc-trade-tag">建具工事</span>
+    </div>
+  </div>
+</section>
+
+<!-- Flow -->
+<section class="fc-flow">
+  <div class="container">
+    <div class="fc-flow-header reveal">
+      <div class="fc-label">Flow</div>
+      <h2 class="fc-title">ご発注の流れ</h2>
+      <p class="fc-sub">お問い合わせから施工完了まで、シンプルな3ステップ。</p>
+    </div>
+    <div class="fc-flow-steps reveal">
+      <div class="fc-flow-step">
+        <div class="fc-flow-num">01</div>
+        <div class="fc-flow-body">
+          <h3>お問い合わせ</h3>
+          <p>工事内容・時期・規模をご連絡ください。お電話・メール・フォームから承ります。まずはご相談だけでもお気軽にどうぞ。</p>
+        </div>
+      </div>
+      <div class="fc-flow-step">
+        <div class="fc-flow-num">02</div>
+        <div class="fc-flow-body">
+          <h3>最適な職人を手配</h3>
+          <p>業種・エリア・スキルに合ったメンバーをマッチング。複数業種が必要な場合もワンストップで手配します。お見積もりもこの段階でご提示。</p>
+        </div>
+      </div>
+      <div class="fc-flow-step">
+        <div class="fc-flow-num">03</div>
+        <div class="fc-flow-body">
+          <h3>施工・完了</h3>
+          <p>ディオが元請として品質管理・契約管理を実施。施工中のご不安やご質問にも窓口ひとつで対応。安心の施工をお届けします。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust Numbers -->
+<section class="fc-trust">
+  <div class="container">
+    <div class="fc-trust-header reveal">
+      <div class="fc-label">Track Record</div>
+      <h2 class="fc-title">実績</h2>
+      <p class="fc-sub">数字で見るBuilders Baseの信頼性。</p>
+    </div>
+    <div class="fc-trust-grid reveal">
+      <div class="fc-trust-item">
+        <div class="fc-trust-num">XX<span>名+</span></div>
+        <div class="fc-trust-label">在籍メンバー数</div>
+      </div>
+      <div class="fc-trust-item">
+        <div class="fc-trust-num">XX<span>業種</span></div>
+        <div class="fc-trust-label">対応可能業種</div>
+      </div>
+      <div class="fc-trust-item">
+        <div class="fc-trust-num">X<span>億円+</span></div>
+        <div class="fc-trust-label">年間受注額</div>
+      </div>
+      <div class="fc-trust-item">
+        <div class="fc-trust-num">XXX<span>件+</span></div>
+        <div class="fc-trust-label">施工実績</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta">
-  <div class="container">
-    <h2 class="cta-title reveal">Builders Baseのメンバーに<br>加わりませんか</h2>
-    <p class="cta-desc reveal">入会金無料。まずはお気軽にお問い合わせください。</p>
-    <div class="cta-buttons reveal">
-      <a href="contact.html" class="btn btn-primary btn-lg">お問い合わせ</a>
-      <a href="plan.html" class="btn btn-outline-white btn-lg">料金プランを見る</a>
+<section class="fc-cta">
+  <div class="container reveal">
+    <h2 class="fc-cta-title">まずはお気軽に<br>ご相談ください</h2>
+    <p class="fc-cta-desc">工事内容がまだ固まっていなくても構いません。ご予算・時期・規模感など、ざっくりとしたご相談から承ります。</p>
+    <div class="fc-cta-buttons">
+      <a href="contact.html" class="btn btn-primary btn-lg">お問い合わせフォーム</a>
+      <a href="tel:03-6384-7984" class="btn btn-secondary btn-lg">電話で相談する</a>
     </div>
-    <p class="cta-contact reveal">Tel: <a href="tel:03-6384-7984">03-6384-7984</a>&emsp;|&emsp;Mail: <a href="mailto:info@builders-base.com">info@builders-base.com</a></p>
+    <div class="fc-cta-contact">
+      <span>Tel: <a href="tel:03-6384-7984">03-6384-7984</a></span>
+      <span>Mail: <a href="mailto:info@builders-base.com">info@builders-base.com</a></span>
+    </div>
   </div>
 </section>
 
@@ -377,20 +420,20 @@
   <div class="container">
     <div class="footer-inner">
       <div>
-        <img src="assets/images/logo-white.svg" alt="Builders Base" height="28">
+        <div class="footer-logo"><img src="assets/images/logo-white.svg" alt="Builders Base" height="28"></div>
         <div class="footer-links">
           <a href="service.html" class="footer-link">サービス</a>
           <a href="plan.html" class="footer-link">料金プラン</a>
           <a href="members-showcase.html" class="footer-link">メンバー紹介</a>
           <a href="for-clients.html" class="footer-link">工事のご依頼</a>
           <a href="company.html" class="footer-link">会社概要</a>
-          <a href="faq.html" class="footer-link">よくある質問</a>
           <a href="contact.html" class="footer-link">お問い合わせ</a>
+          <a href="faq.html" class="footer-link">よくある質問</a>
         </div>
       </div>
       <div class="footer-info">
         運営: 株式会社ディオ<br>
-        東京都豊島区東池袋 4-14-5 黒柳製本ビル3階<br>
+        東京都豊島区東池袋<br>
         Tel: 03-6384-7984<br>
         Mail: info@builders-base.com
       </div>
@@ -399,116 +442,12 @@
   </div>
 </footer>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  firebase.initializeApp({
-    apiKey: "AIzaSyBJ5TFzohZX31DPVOMejUEamN2ytJzCwMI",
-    authDomain: "buildersbase-59d77.firebaseapp.com",
-    projectId: "buildersbase-59d77",
-    storageBucket: "buildersbase-59d77.firebasestorage.app",
-    messagingSenderId: "486430842362",
-    appId: "1:486430842362:web:af92e17459e2a32e8d1843"
+  // Navigation scroll
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
   });
-  var db = firebase.firestore();
-
-  // Animated counter
-  function animateCounter(el, target, suffix) {
-    suffix = suffix || '';
-    var duration = 1500;
-    var startTime = null;
-    function step(ts) {
-      if (!startTime) startTime = ts;
-      var p = Math.min((ts - startTime) / duration, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      var current = Math.floor(eased * target);
-      el.innerHTML = current + '<span>' + suffix + '</span>';
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  // Load data
-  (async function() {
-    try {
-      var snapshot = await db.collection('members').orderBy('sort').get();
-      var allMembers = [];
-      var allTags = new Set();
-
-      snapshot.forEach(function(doc) {
-        var d = doc.data();
-        if (!d.visible || !d.company) return;
-        allMembers.push({
-          company: d.company,
-          name: d.name || '',
-          tags: Array.isArray(d.tags) ? d.tags : [],
-          type: d.type || '',
-          img: d.img || ''
-        });
-        (d.tags || []).forEach(function(t) { allTags.add(t); });
-      });
-
-      // Stats
-      var totalCount = allMembers.length;
-      var tradeCount = allTags.size;
-
-      var statsObs = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            animateCounter(document.getElementById('statMembers'), totalCount, '社+');
-            animateCounter(document.getElementById('statTrades'), tradeCount, '業種');
-            statsObs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.3 });
-      statsObs.observe(document.getElementById('stats'));
-
-      // Gallery
-      var photoMembers = allMembers.filter(function(m) { return m.img; });
-      var displayMembers = photoMembers.slice(0, 15);
-      var galleryGrid = document.getElementById('galleryGrid');
-
-      displayMembers.forEach(function(m) {
-        var card = document.createElement('div');
-        card.className = 'gallery-card';
-        var tagsHtml = m.tags.slice(0, 3).map(function(t) {
-          return '<span class="gallery-card-tag">' + t + '</span>';
-        }).join('');
-        card.innerHTML =
-          '<img class="gallery-card-img" src="' + m.img + '" alt="' + m.company + '" loading="lazy">' +
-          '<div class="gallery-card-body">' +
-            '<div class="gallery-card-company">' + m.company + '</div>' +
-            '<div class="gallery-card-tags">' + tagsHtml + '</div>' +
-          '</div>';
-        galleryGrid.appendChild(card);
-      });
-
-      document.getElementById('galleryLoading').style.display = 'none';
-      document.getElementById('galleryWrapper').style.display = '';
-
-      var remaining = totalCount - displayMembers.length;
-      if (remaining > 0) {
-        document.getElementById('galleryFade').style.display = 'block';
-        document.getElementById('galleryMore').style.display = 'block';
-        document.getElementById('galleryMoreBadge').textContent = '+ 他にも' + remaining + '社以上が在籍';
-      }
-
-      // Trades cloud
-      var tradesCloud = document.getElementById('tradesCloud');
-      allTags.forEach(function(tag) {
-        var span = document.createElement('span');
-        span.className = 'trade-tag';
-        span.textContent = tag;
-        tradesCloud.appendChild(span);
-      });
-
-    } catch(e) {
-      console.error('Load error:', e);
-      document.getElementById('galleryLoading').innerHTML =
-        '<p style="color:var(--gray-500);">メンバー情報の読み込みに失敗しました</p>';
-    }
-  })();
 
   // Mobile menu
   document.getElementById('hamburger').addEventListener('click', function() {
@@ -531,7 +470,7 @@
     entries.forEach(function(entry) {
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 </script>
 </body>
