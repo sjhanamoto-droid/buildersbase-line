@@ -952,6 +952,7 @@
 
     // Collect form data based on selected plan
     let data = {
+      会員種別: selectedPlan === 'kyoryoku' ? '協力会員' : 'メンバー会員（スタンダード）',
       plan: PLAN_INFO[selectedPlan]?.name || '',
       timestamp: new Date().toLocaleString('ja-JP')
     };
