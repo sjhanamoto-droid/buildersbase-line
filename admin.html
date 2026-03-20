@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>メンバー管理 | Builders Base</title>
+<title>管理画面 | Builders Base</title>
 <style>
   :root {
     --black: #1a1a1a;
@@ -544,6 +544,160 @@
     font-size: 12px;
     color: var(--gray);
   }
+
+  /* Admin Tabs */
+  .admin-tabs {
+    display: flex;
+    background: var(--white);
+    border-bottom: 2px solid var(--gray-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .admin-tab {
+    flex: 1;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--gray);
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+  }
+
+  .admin-tab:hover { color: var(--black); }
+  .admin-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Board Post Rows */
+  .board-post-row {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+
+  .board-post-row.hidden-post {
+    opacity: 0.5;
+    border-style: dashed;
+  }
+
+  .board-post-row.closed-post {
+    background: #fafafa;
+  }
+
+  .board-post-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .board-post-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .board-post-meta {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+
+  .board-post-meta span + span::before {
+    content: ' ・ ';
+  }
+
+  .board-post-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+
+  .board-post-author {
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  .board-post-actions {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .btn-toggle-vis {
+    background: #f0fdf4;
+    color: var(--green);
+    border: 1px solid var(--green);
+  }
+
+  .btn-toggle-vis.is-hidden {
+    background: #fef2f2;
+    color: var(--red);
+    border: 1px solid var(--red);
+  }
+
+  .badge-open { background: #f0fdf4; color: var(--green); }
+  .badge-closed { background: var(--gray-light); color: var(--gray); }
+
+  /* Board Detail */
+  .detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .detail-table th {
+    text-align: left;
+    padding: 8px 12px 8px 0;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--gray);
+    white-space: nowrap;
+    vertical-align: top;
+    width: 100px;
+    border-bottom: 1px solid var(--gray-light);
+  }
+
+  .detail-table td {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-light);
+    word-break: break-all;
+  }
+
+  .detail-table tr:last-child th,
+  .detail-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .detail-section-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray);
+    margin: 16px 0 4px;
+  }
+
+  .detail-text {
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    background: var(--gray-light);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
 </style>
 </head>
 <body>
@@ -563,7 +717,7 @@
     <path d="M77.2413 51.5V56.388C77.2413 57.324 77.5793 57.766 78.2553 57.766C78.4893 57.766 78.5673 57.766 78.6193 57.74V60.86C77.7873 61.172 77.1373 61.276 76.2533 61.276C74.5633 61.276 73.7833 60.704 73.4193 59.586C72.5353 60.912 71.1573 61.536 69.2593 61.536C66.1913 61.536 64.3193 59.898 64.3193 57.116C64.3193 54.048 66.7893 52.41 70.7153 52.41C71.2873 52.41 72.0673 52.462 72.7953 52.592V51.708C72.7953 49.914 72.1193 49.082 70.9233 49.082C69.7013 49.082 69.0253 49.836 68.7393 51.5L64.9693 50.798C65.6973 47.808 67.9073 46.196 71.2353 46.196C74.9533 46.196 77.2413 48.146 77.2413 51.5ZM70.5333 58.546C72.0413 58.546 72.7953 57.61 72.7953 55.452C72.3013 55.322 71.5993 55.244 70.9493 55.244C69.5973 55.244 68.7393 55.894 68.7393 57.012C68.7393 57.896 69.4153 58.546 70.5333 58.546Z" fill="white"/>
     <path d="M52.34 48.692H52.418C53.328 47.106 54.784 46.196 56.656 46.196C60.53 46.196 62.636 48.926 62.636 53.918C62.636 58.364 60.036 61.536 56.396 61.536C54.602 61.536 53.25 60.756 52.392 59.3L52.34 59.326C52.6 59.872 52.73 60.184 52.73 61.146V61.276H48.44V40.476H52.86V45.416C52.86 46.716 52.652 47.938 52.34 48.692ZM55.486 58.364C57.046 58.364 58.138 56.804 58.138 53.918C58.138 51.006 57.046 49.42 55.356 49.42C53.744 49.42 52.782 51.006 52.782 53.944C52.782 56.908 53.64 58.364 55.486 58.364Z" fill="white"/>
   </svg>
-  <h1>メンバー管理</h1>
+  <h1>管理画面</h1>
 </div>
 
 <!-- Login Screen -->
@@ -577,18 +731,39 @@
 
 <!-- Admin Screen -->
 <div id="adminScreen" style="display:none;">
-  <div class="container">
-    <div class="toolbar">
-      <button class="btn btn-add" onclick="openAddForm()">+ 新規メンバーを追加</button>
-      <button class="btn btn-shuffle" onclick="confirmShuffle()">&#x1F500; シャッフル</button>
-      <button class="btn btn-logout" onclick="doLogout()">ログアウト</button>
-    </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" id="tabBtnMembers" onclick="switchTab('members')">メンバー管理</button>
+    <button class="admin-tab" id="tabBtnBoard" onclick="switchTab('board')">募集ボード管理</button>
+    <button class="btn btn-logout" onclick="doLogout()" style="position:absolute;right:16px;top:10px;">ログアウト</button>
+  </div>
 
-    <div id="memberCount" class="member-count"></div>
-    <div id="memberList" class="member-list">
-      <div class="loading">
-        <div class="spinner"></div>
-        <p>読み込み中...</p>
+  <!-- Tab: Members -->
+  <div id="tabMembers" class="tab-content active">
+    <div class="container">
+      <div class="toolbar">
+        <button class="btn btn-add" onclick="openAddForm()">+ 新規メンバーを追加</button>
+        <button class="btn btn-shuffle" onclick="confirmShuffle()">&#x1F500; シャッフル</button>
+      </div>
+
+      <div id="memberCount" class="member-count"></div>
+      <div id="memberList" class="member-list">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>読み込み中...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Board Posts -->
+  <div id="tabBoard" class="tab-content">
+    <div class="container">
+      <div id="boardCount" class="member-count"></div>
+      <div id="boardList" class="member-list">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>読み込み中...</p>
+        </div>
       </div>
     </div>
   </div>
@@ -677,6 +852,17 @@
   </div>
 </div>
 
+<!-- Board Post Detail Modal -->
+<div id="boardDetailModal" class="modal-overlay">
+  <div class="modal">
+    <h2 id="boardDetailTitle">投稿詳細</h2>
+    <div id="boardDetailContent"></div>
+    <div class="form-actions" style="margin-top:24px;">
+      <button class="btn btn-secondary" onclick="closeBoardDetail()">閉じる</button>
+    </div>
+  </div>
+</div>
+
 <!-- Confirm Dialog -->
 <div id="confirmOverlay" class="confirm-overlay">
   <div class="confirm-box">
@@ -692,7 +878,7 @@
 <div id="toast" class="toast"></div>
 
 <div class="footer">
-  <p>Builders Base メンバー管理</p>
+  <p>Builders Base 管理画面</p>
 </div>
 
 <!-- Firebase SDK -->
@@ -1211,6 +1397,198 @@ function showToast(msg, type) {
   el.textContent = msg;
   el.className = 'toast ' + (type || '') + ' show';
   setTimeout(function() { el.className = 'toast'; }, 3000);
+}
+
+// === Tab Switching ===
+var currentTab = 'members';
+var boardPostsLoaded = false;
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabMembers').classList.toggle('active', tab === 'members');
+  document.getElementById('tabBoard').classList.toggle('active', tab === 'board');
+  document.getElementById('tabBtnMembers').classList.toggle('active', tab === 'members');
+  document.getElementById('tabBtnBoard').classList.toggle('active', tab === 'board');
+
+  if (tab === 'board' && !boardPostsLoaded) {
+    loadBoardPosts();
+  }
+}
+
+// === Board Posts Management ===
+var BOARD_POSTS = [];
+
+async function loadBoardPosts() {
+  document.getElementById('boardList').innerHTML = '<div class="loading"><div class="spinner"></div><p>読み込み中...</p></div>';
+  try {
+    var snapshot = await db.collection('board_posts').get();
+    BOARD_POSTS = [];
+    snapshot.forEach(function(doc) {
+      var d = doc.data();
+      d.id = doc.id;
+      BOARD_POSTS.push(d);
+    });
+    BOARD_POSTS.sort(function(a, b) {
+      var ta = a.createdAt ? (a.createdAt.seconds || 0) : 0;
+      var tb = b.createdAt ? (b.createdAt.seconds || 0) : 0;
+      return tb - ta;
+    });
+    boardPostsLoaded = true;
+    renderBoardPosts();
+  } catch (err) {
+    console.error(err);
+    document.getElementById('boardList').innerHTML = '<div class="loading"><p>データの取得に失敗しました</p></div>';
+  }
+}
+
+function renderBoardPosts() {
+  var container = document.getElementById('boardList');
+  var countEl = document.getElementById('boardCount');
+  var visibleCount = BOARD_POSTS.filter(function(p) { return p.visible; }).length;
+  countEl.textContent = '全 ' + BOARD_POSTS.length + ' 件（公開中: ' + visibleCount + ' 件）';
+
+  if (BOARD_POSTS.length === 0) {
+    container.innerHTML = '<div class="loading"><p>募集投稿がありません</p></div>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < BOARD_POSTS.length; i++) {
+    html += renderBoardPostRow(BOARD_POSTS[i], i);
+  }
+  container.innerHTML = html;
+}
+
+function renderBoardPostRow(post, index) {
+  var hiddenClass = post.visible ? '' : ' hidden-post';
+  var closedClass = post.status === 'closed' ? ' closed-post' : '';
+
+  var statusBadge = post.status === 'closed'
+    ? '<span class="badge badge-closed">締切</span>'
+    : '<span class="badge badge-open">募集中</span>';
+
+  var visBadge = post.visible
+    ? '<span class="badge badge-visible">公開中</span>'
+    : '<span class="badge badge-hidden">非公開</span>';
+
+  var catBadge = '<span class="badge badge-member">' + escapeHtml(post.category || '') + '</span>';
+
+  var dateRange = post.startDate || '';
+  if (post.endDate) dateRange += ' 〜 ' + post.endDate;
+
+  var createdStr = '';
+  if (post.createdAt) {
+    var d;
+    if (post.createdAt.toDate) d = post.createdAt.toDate();
+    else if (post.createdAt.seconds) d = new Date(post.createdAt.seconds * 1000);
+    if (d) {
+      createdStr = d.getFullYear() + '/' + ('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2)
+        + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    }
+  }
+
+  var visBtnClass = post.visible ? 'btn btn-small btn-toggle-vis' : 'btn btn-small btn-toggle-vis is-hidden';
+  var visBtnText = post.visible ? '非公開にする' : '公開にする';
+
+  return '<div class="board-post-row' + hiddenClass + closedClass + '">'
+    + '<div class="board-post-top">' + catBadge + statusBadge + visBadge + '</div>'
+    + '<div class="board-post-title">' + escapeHtml(post.title || '') + '</div>'
+    + '<div class="board-post-meta">'
+    + '<span>' + escapeHtml(post.area || '') + '</span>'
+    + '<span>' + escapeHtml(dateRange) + '</span>'
+    + '<span>' + (post.headcount || 1) + '名</span>'
+    + (post.pay ? '<span>' + escapeHtml(post.pay) + '</span>' : '')
+    + '</div>'
+    + '<div class="board-post-footer">'
+    + '<div class="board-post-author">投稿者: ' + escapeHtml(post.authorName || '') + (createdStr ? ' (' + createdStr + ')' : '') + '</div>'
+    + '<div class="board-post-actions">'
+    + '<button class="btn btn-small btn-edit" onclick="openBoardDetail(' + index + ')">詳細</button>'
+    + '<button class="' + visBtnClass + '" onclick="togglePostVisibility(' + index + ')">' + visBtnText + '</button>'
+    + '<button class="btn btn-small btn-delete" onclick="confirmDeletePost(' + index + ')">削除</button>'
+    + '</div>'
+    + '</div>'
+    + '</div>';
+}
+
+async function togglePostVisibility(index) {
+  var post = BOARD_POSTS[index];
+  var newVisible = !post.visible;
+  try {
+    await db.collection('board_posts').doc(post.id).update({ visible: newVisible });
+    showToast(newVisible ? '公開にしました' : '非公開にしました', 'success');
+    loadBoardPosts();
+  } catch (err) {
+    console.error(err);
+    showToast('更新に失敗しました', 'error');
+  }
+}
+
+function confirmDeletePost(index) {
+  var post = BOARD_POSTS[index];
+  document.getElementById('confirmMessage').textContent = '「' + (post.title || '') + '」を削除しますか？この操作は取り消せません。';
+  document.getElementById('confirmBtn').textContent = '削除する';
+  document.getElementById('confirmBtn').className = 'btn btn-delete';
+  pendingConfirmAction = function() { deleteBoardPost(post.id); };
+  document.getElementById('confirmOverlay').classList.add('active');
+}
+
+async function deleteBoardPost(docId) {
+  try {
+    await db.collection('board_posts').doc(docId).delete();
+    showToast('削除しました', 'success');
+    loadBoardPosts();
+  } catch (err) {
+    console.error(err);
+    showToast('削除に失敗しました', 'error');
+  }
+}
+
+// === Board Detail Modal ===
+function openBoardDetail(index) {
+  var post = BOARD_POSTS[index];
+  document.getElementById('boardDetailTitle').textContent = post.title || '投稿詳細';
+
+  var dateRange = post.startDate || '-';
+  if (post.endDate) dateRange += ' 〜 ' + post.endDate;
+
+  var createdStr = '-';
+  if (post.createdAt) {
+    var d;
+    if (post.createdAt.toDate) d = post.createdAt.toDate();
+    else if (post.createdAt.seconds) d = new Date(post.createdAt.seconds * 1000);
+    if (d) {
+      createdStr = d.getFullYear() + '/' + ('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2)
+        + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    }
+  }
+
+  var statusText = post.status === 'closed' ? '締切' : '募集中';
+  var visText = post.visible ? '公開中' : '非公開';
+
+  var html = '<table class="detail-table">';
+  html += '<tr><th>カテゴリ</th><td>' + escapeHtml(post.category || '-') + '</td></tr>';
+  html += '<tr><th>ステータス</th><td>' + statusText + ' / ' + visText + '</td></tr>';
+  html += '<tr><th>エリア</th><td>' + escapeHtml(post.area || '-') + '</td></tr>';
+  html += '<tr><th>工期</th><td>' + escapeHtml(dateRange) + '</td></tr>';
+  html += '<tr><th>募集人数</th><td>' + (post.headcount || 1) + '名</td></tr>';
+  html += '<tr><th>単価・報酬</th><td>' + escapeHtml(post.pay || '応相談') + '</td></tr>';
+  html += '<tr><th>投稿者</th><td>' + escapeHtml(post.authorName || '-') + '</td></tr>';
+  html += '<tr><th>電話番号</th><td>' + (post.contactPhone ? '<a href="tel:' + escapeHtml(post.contactPhone) + '">' + escapeHtml(post.contactPhone) + '</a>' : '-') + '</td></tr>';
+  html += '<tr><th>メール</th><td>' + (post.contactEmail ? '<a href="mailto:' + escapeHtml(post.contactEmail) + '">' + escapeHtml(post.contactEmail) + '</a>' : '-') + '</td></tr>';
+  html += '<tr><th>投稿日時</th><td>' + createdStr + '</td></tr>';
+  html += '</table>';
+
+  if (post.details) {
+    html += '<div class="detail-section-label">詳細・備考</div>';
+    html += '<div class="detail-text">' + escapeHtml(post.details) + '</div>';
+  }
+
+  document.getElementById('boardDetailContent').innerHTML = html;
+  document.getElementById('boardDetailModal').classList.add('active');
+}
+
+function closeBoardDetail() {
+  document.getElementById('boardDetailModal').classList.remove('active');
 }
 
 // === Util ===
