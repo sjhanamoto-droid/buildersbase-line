@@ -1575,6 +1575,7 @@ function openBoardDetail(index) {
   html += '<tr><th>投稿者</th><td>' + escapeHtml(post.authorName || '-') + '</td></tr>';
   html += '<tr><th>電話番号</th><td>' + (post.contactPhone ? '<a href="tel:' + escapeHtml(post.contactPhone) + '">' + escapeHtml(post.contactPhone) + '</a>' : '-') + '</td></tr>';
   html += '<tr><th>メール</th><td>' + (post.contactEmail ? '<a href="mailto:' + escapeHtml(post.contactEmail) + '">' + escapeHtml(post.contactEmail) + '</a>' : '-') + '</td></tr>';
+  html += '<tr><th>LINE</th><td>' + (post.contactLine ? '<a href="' + escapeHtml(post.contactLine) + '" target="_blank">LINEで連絡</a>' : '-') + '</td></tr>';
   html += '<tr><th>投稿日時</th><td>' + createdStr + '</td></tr>';
   html += '</table>';
 
