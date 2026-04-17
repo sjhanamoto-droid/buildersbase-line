@@ -439,7 +439,6 @@
       snapshot.forEach(function(doc) {
         var d = doc.data();
         if (!d.visible || !d.company) return;
-        if (d.type === '協力会員') return;
         allMembers.push({
           company: d.company,
           name: d.name || '',
@@ -467,7 +466,7 @@
 
       // Gallery
       var photoMembers = allMembers.filter(function(m) { return m.img; });
-      var displayMembers = photoMembers.slice(0, 15);
+      var displayMembers = photoMembers;
       var galleryGrid = document.getElementById('galleryGrid');
 
       displayMembers.forEach(function(m) {
