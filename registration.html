@@ -767,6 +767,14 @@
           <input type="url" class="form-input" name="portfolio_url" placeholder="https://">
         </div>
 
+        <div class="form-group">
+          <label class="form-label">お支払い方法 <span class="required">必須</span></label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="payment_method" value="会費ペイ" required>会費ペイ（クレジットカード / 口座振替）</label>
+            <label class="radio-label"><input type="radio" name="payment_method" value="請求書払い">請求書払い（後日、請求書を発行いたします）</label>
+          </div>
+        </div>
+
         <div class="consent-group">
           <label class="consent-label">
             <input type="checkbox" name="agree_fee" required>
@@ -824,6 +832,14 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label class="form-label">お支払い方法 <span class="required">必須</span></label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="payment_method" value="会費ペイ" required>会費ペイ（クレジットカード / 口座振替）</label>
+            <label class="radio-label"><input type="radio" name="payment_method" value="請求書払い">請求書払い（後日、請求書を発行いたします）</label>
+          </div>
+        </div>
+
         <div class="consent-group">
           <label class="consent-label">
             <input type="checkbox" name="agree_terms" required>
@@ -847,14 +863,28 @@
         <div class="plan-tag" id="display-plan-name"></div>
         <div class="plan-amount" id="display-plan-amount"></div>
       </div>
-      <div class="form-note">
-        会費ペイのページが開きます。<br>
-        画面の案内に従って、お支払い方法をご登録ください。<br>
-        <strong>カード決済</strong>または<strong>口座振替</strong>が選択できます。
+
+      <!-- 会費ペイを選択した場合 -->
+      <div id="pay-kaihipay">
+        <div class="form-note">
+          会費ペイのページが開きます。<br>
+          画面の案内に従って、お支払い方法をご登録ください。<br>
+          <strong>カード決済</strong>または<strong>口座振替</strong>が選択できます。
+        </div>
+        <a href="#" id="payment-btn" class="btn btn-primary" target="_blank">
+          お支払い登録へ進む <span class="btn-icon">&#8594;</span>
+        </a>
       </div>
-      <a href="#" id="payment-btn" class="btn btn-primary" target="_blank">
-        お支払い登録へ進む <span class="btn-icon">&#8594;</span>
-      </a>
+
+      <!-- 請求書払いを選択した場合 -->
+      <div id="pay-invoice" style="display:none;">
+        <div class="form-note">
+          <strong>請求書払い</strong>をご選択いただきました。<br>
+          後日、担当者より請求書を発行してお送りいたします。<br>
+          請求書に記載の期日までにお振込みをお願いいたします。<br><br>
+          <strong>以上で入会お申し込みは完了です。ありがとうございました。</strong>
+        </div>
+      </div>
     </div>
     <div class="lock-msg" id="step3-lock">STEP 2 を完了してください</div>
   </div>
@@ -885,6 +915,7 @@
   };
 
   let selectedPlan = null;
+  let selectedPaymentMethod = null;
 
   function selectPlan(plan) {
     selectedPlan = plan;
@@ -979,6 +1010,10 @@
       data.start_month = form.start_month?.value || '';
     }
 
+    // お支払い方法（両プラン共通）
+    selectedPaymentMethod = form.payment_method.value;
+    data.支払方法 = selectedPaymentMethod;
+
     // Send to Google Apps Script
     fetch(CONFIG.scriptUrl, {
       method: 'POST',
@@ -996,6 +1031,11 @@
     // Hide all forms, show success
     document.querySelectorAll('.plan-form').forEach(f => f.style.display = 'none');
     document.getElementById('form-success').classList.add('show');
+
+    // STEP 3 をお支払い方法に応じて出し分け
+    const isInvoice = selectedPaymentMethod === '請求書払い';
+    document.getElementById('pay-kaihipay').style.display = isInvoice ? 'none' : 'block';
+    document.getElementById('pay-invoice').style.display = isInvoice ? 'block' : 'none';
 
     const step2 = document.getElementById('step2');
     step2.classList.remove('active');
