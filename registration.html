@@ -794,11 +794,6 @@
         <div class="form-error-msg" id="form-error-standard"></div>
 
         <div class="form-group">
-          <label class="form-label">ご紹介者様名 <span class="required">必須</span></label>
-          <input type="text" class="form-input" name="referrer" required>
-        </div>
-
-        <div class="form-group">
           <label class="form-label">会社名／屋号 <span class="required">必須</span></label>
           <input type="text" class="form-input" name="company" required>
         </div>
@@ -1033,8 +1028,8 @@
       timestamp: new Date().toLocaleString('ja-JP')
     };
 
-    // 共通項目（両プラン同一）
-    data.referrer = form.referrer.value;
+    // 共通項目
+    data.referrer = form.referrer?.value || '';
     data.company = form.company.value;
     data.contact_name = form.contact_name.value;
     data.phone = form.phone.value;
