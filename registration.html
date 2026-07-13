@@ -794,6 +794,11 @@
         <div class="form-error-msg" id="form-error-standard"></div>
 
         <div class="form-group">
+          <label class="form-label">ご紹介者様名 <span class="required">必須</span></label>
+          <input type="text" class="form-input" name="referrer" required>
+        </div>
+
+        <div class="form-group">
           <label class="form-label">会社名／屋号 <span class="required">必須</span></label>
           <input type="text" class="form-input" name="company" required>
         </div>
@@ -809,11 +814,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">メールアドレス <span class="required">必須</span></label>
-          <input type="email" class="form-input" name="email" placeholder="example@email.com" required>
-        </div>
-
-        <div class="form-group">
           <label class="form-label">郵便番号 <span class="required">必須</span></label>
           <input type="text" class="form-input" name="zip" placeholder="123-4567" required>
         </div>
@@ -821,6 +821,49 @@
         <div class="form-group">
           <label class="form-label">住所 <span class="required">必須</span></label>
           <textarea class="form-input" name="address" rows="2" placeholder="都道府県から番地まで" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">メールアドレス <span class="required">必須</span></label>
+          <input type="email" class="form-input" name="email" placeholder="example@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">対応可能な業種（複数選択可）<span class="required">必須</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="電気工事">電気工事</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="設備工事">設備工事</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="内装工事">内装工事</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="塗装工事">塗装工事</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="足場工事">足場工事</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="解体工事">解体工事</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="外構工事">外構工事</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="重機関連">重機関連</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="清掃・クリーニング">清掃・クリーニング</label>
+            <label class="checkbox-label"><input type="checkbox" name="job_type" value="その他">その他</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">対応可能エリア（複数選択可）<span class="required">必須</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-label"><input type="checkbox" name="area" value="東京都">東京都</label>
+            <label class="checkbox-label"><input type="checkbox" name="area" value="神奈川県">神奈川県</label>
+            <label class="checkbox-label"><input type="checkbox" name="area" value="千葉県">千葉県</label>
+            <label class="checkbox-label"><input type="checkbox" name="area" value="埼玉県">埼玉県</label>
+            <label class="checkbox-label"><input type="checkbox" name="area" value="茨城県">茨城県</label>
+            <label class="checkbox-label"><input type="checkbox" name="area" value="その他">その他</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ホームページ／SNS URL</label>
+          <input type="url" class="form-input" name="website_url" placeholder="https://">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">実績・施工事例URL</label>
+          <input type="url" class="form-input" name="portfolio_url" placeholder="https://">
         </div>
 
         <div class="form-group">
@@ -842,8 +885,12 @@
 
         <div class="consent-group">
           <label class="consent-label">
-            <input type="checkbox" name="agree_terms" required>
-            <span>スタンダードプラン月額会費 30,000円（税込）の利用規約に同意します</span>
+            <input type="checkbox" name="agree_fee" required>
+            <span>スタンダードプラン月額会費 30,000円（税込）の登録条件に同意します</span>
+          </label>
+          <label class="consent-label">
+            <input type="checkbox" name="agree_privacy" required>
+            <span>個人情報の取り扱いに同意します</span>
           </label>
         </div>
 
@@ -961,20 +1008,18 @@
     const btn = form.querySelector('.submit-btn');
     const errorEl = form.querySelector('.form-error-msg');
 
-    // Validate checkbox groups for kyoryoku form
-    if (selectedPlan === 'kyoryoku') {
-      const jobChecked = form.querySelectorAll('input[name="job_type"]:checked');
-      const areaChecked = form.querySelectorAll('input[name="area"]:checked');
-      if (jobChecked.length === 0) {
-        errorEl.textContent = '対応可能な業種を1つ以上選択してください';
-        errorEl.classList.add('show');
-        return false;
-      }
-      if (areaChecked.length === 0) {
-        errorEl.textContent = '対応可能エリアを1つ以上選択してください';
-        errorEl.classList.add('show');
-        return false;
-      }
+    // Validate checkbox groups (両プラン共通)
+    const jobChecked = form.querySelectorAll('input[name="job_type"]:checked');
+    const areaChecked = form.querySelectorAll('input[name="area"]:checked');
+    if (jobChecked.length === 0) {
+      errorEl.textContent = '対応可能な業種を1つ以上選択してください';
+      errorEl.classList.add('show');
+      return false;
+    }
+    if (areaChecked.length === 0) {
+      errorEl.textContent = '対応可能エリアを1つ以上選択してください';
+      errorEl.classList.add('show');
+      return false;
     }
 
     errorEl.classList.remove('show');
@@ -988,25 +1033,21 @@
       timestamp: new Date().toLocaleString('ja-JP')
     };
 
-    if (selectedPlan === 'kyoryoku') {
-      data.referrer = form.referrer.value;
-      data.company = form.company.value;
-      data.contact_name = form.contact_name.value;
-      data.phone = form.phone.value;
-      data.zip = form.zip.value;
-      data.address = form.address.value;
-      data.email = form.email.value;
-      data.job_type = Array.from(form.querySelectorAll('input[name="job_type"]:checked')).map(cb => cb.value).join(', ');
-      data.area = Array.from(form.querySelectorAll('input[name="area"]:checked')).map(cb => cb.value).join(', ');
-      data.website_url = form.website_url?.value || '';
-      data.portfolio_url = form.portfolio_url?.value || '';
-    } else {
-      data.company = form.company.value;
-      data.contact_name = form.contact_name.value;
-      data.phone = form.phone.value;
-      data.email = form.email.value;
-      data.zip = form.zip.value;
-      data.address = form.address.value;
+    // 共通項目（両プラン同一）
+    data.referrer = form.referrer.value;
+    data.company = form.company.value;
+    data.contact_name = form.contact_name.value;
+    data.phone = form.phone.value;
+    data.zip = form.zip.value;
+    data.address = form.address.value;
+    data.email = form.email.value;
+    data.job_type = Array.from(form.querySelectorAll('input[name="job_type"]:checked')).map(cb => cb.value).join(', ');
+    data.area = Array.from(form.querySelectorAll('input[name="area"]:checked')).map(cb => cb.value).join(', ');
+    data.website_url = form.website_url?.value || '';
+    data.portfolio_url = form.portfolio_url?.value || '';
+
+    // スタンダードのみ：入会希望月
+    if (selectedPlan === 'standard') {
       data.start_month = form.start_month?.value || '';
     }
 
